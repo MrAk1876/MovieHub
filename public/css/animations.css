@@ -1,0 +1,80 @@
+.card {
+  transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card.moving-out {
+  transform: scale(0.7);
+  opacity: 0;
+}
+
+.card.moving-in {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.card.adding {
+  transform: scale(0.88);
+  opacity: 0;
+}
+
+.movie-grid.updating {
+  opacity: 0.72;
+  transform: translateY(3px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.movie-card.dragging {
+  opacity: 0.6;
+  transform: rotate(2deg) scale(1.05);
+  z-index: 10;
+  box-shadow:
+    0 0 0 2px var(--accent),
+    0 16px 30px rgba(0, 0, 0, 0.24);
+}
+
+.movie-card.drag-over {
+  box-shadow:
+    0 0 0 2px var(--accent),
+    0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
+.drop-indicator {
+  position: fixed;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 1px var(--bg-surface),
+    0 0 12px var(--accent-soft);
+  pointer-events: none;
+  z-index: 120;
+  opacity: 0;
+  transform: scaleX(0.92);
+  transform-origin: left center;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.drop-indicator.visible {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.section.drag-over {
+  outline: 2px dashed var(--accent);
+  outline-offset: -4px;
+  background: linear-gradient(180deg, var(--accent-soft), transparent);
+}
+
+.drag-ghost {
+  opacity: 0.85;
+  transform: rotate(2deg) scale(1.02);
+  pointer-events: none;
+}
+
+body.dragging .seen-toggle {
+  pointer-events: none;
+}

@@ -1,0 +1,81 @@
+:root {
+  --bg-primary: #f4f4f4;
+  --bg-page-gradient: linear-gradient(180deg, #f6f8ff 0%, #edf2ff 55%, #e8eefb 100%);
+  --bg-glow-primary: radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.2), transparent 48%);
+  --bg-glow-secondary: radial-gradient(circle at 85% 80%, rgba(14, 165, 233, 0.16), transparent 55%);
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-nav: rgba(248, 250, 252, 0.88);
+  --bg-input: #ffffff;
+  --bg-chip: #e5e7eb;
+  --bg-chip-active: #2563eb;
+  --text-primary: #111111;
+  --text-secondary: #4b5563;
+  --text-inverse: #ffffff;
+  --border-color: #d1d5db;
+  --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.16);
+  --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.08);
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.22);
+  --success: #10b981;
+  --danger: #dc2626;
+  --warn: #2563eb;
+  --seen-card-bg: linear-gradient(135deg, #d1fae5, #86efac);
+}
+
+body.dark {
+  --bg-primary: #111111;
+  --bg-page-gradient: linear-gradient(180deg, #0f172a 0%, #111827 58%, #0b1220 100%);
+  --bg-glow-primary: radial-gradient(circle at 16% 12%, rgba(59, 130, 246, 0.28), transparent 46%);
+  --bg-glow-secondary: radial-gradient(circle at 84% 78%, rgba(16, 185, 129, 0.16), transparent 54%);
+  --bg-surface: #171717;
+  --bg-surface-soft: #1f1f1f;
+  --bg-card: #1e1e1e;
+  --bg-nav: rgba(15, 23, 42, 0.78);
+  --bg-input: #18181b;
+  --bg-chip: #2a2a2a;
+  --bg-chip-active: #3b82f6;
+  --text-primary: #f4f4f4;
+  --text-secondary: #a3a3a3;
+  --text-inverse: #ffffff;
+  --border-color: #2f3748;
+  --shadow-lg: 0 22px 44px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.32);
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.25);
+  --success: #10b981;
+  --danger: #ef4444;
+  --warn: #60a5fa;
+  --seen-card-bg: linear-gradient(135deg, #1f3d2b, #14532d);
+}
+
+body.light {
+  --bg-primary: #f4f4f4;
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  background: var(--bg-page-gradient);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::before {
+  background: var(--bg-glow-primary);
+}
+
+body::after {
+  background: var(--bg-glow-secondary);
+}
+

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marvel Movie Hub</title>
+
+    <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/animations.css" />
+  </head>
+  <body class="app-body">
+    <script>
+      // Apply theme class before the app paints to avoid theme flicker.
+      (function applyInitialTheme() {
+        try {
+          const saved = localStorage.getItem("mmh-theme");
+          const theme = saved === "light" || saved === "dark" ? saved : "dark";
+          document.body.classList.remove("light", "dark");
+          document.body.classList.add(theme);
+        } catch (error) {
+          document.body.classList.add("dark");
+        }
+      })();
+    </script>
+
+    <div id="app">
+      <header id="app-header" class="app-header">
+        <div class="header-inner">
+          <div class="brand-block">
+            <h1>Marvel Hub</h1>
+          </div>
+
+          <div class="header-search-wrap">
+            <label for="searchInput" class="sr-only">Search movies</label>
+            <input
+              id="searchInput"
+              class="search-input"
+              type="text"
+              autocomplete="off"
+              placeholder="Search by title or year..."
+            />
+          </div>
+
+          <div class="header-actions">
+            <button id="themeToggleBtn" class="icon-btn" type="button" aria-label="Toggle theme">
+              &#9790;
+            </button>
+            <button id="openAddViewBtn" class="btn btn-primary" type="button">Add Movie</button>
+          </div>
+        </div>
+      </header>
+
+      <main id="view-container" class="view-container"></main>
+    </div>
+
+    <template id="movieCardTemplate">
+      <article class="card movie-card" draggable="true">
+        <div class="card-media">
+          <img class="poster" alt="Movie poster" loading="lazy" />
+          <span class="order-badge">#1</span>
+          <span class="watched-pill">Watched</span>
+          <span class="drag-pill" title="Drag to reorder/move">Drag</span>
+        </div>
+
+        <div class="card-content">
+          <div class="title-row">
+            <span class="order-hero">1</span>
+            <h3 class="movie-title"></h3>
+          </div>
+
+          <div class="card-meta-row">
+            <p class="movie-year"></p>
+            <span class="status-chip">Unwatched</span>
+          </div>
+
+          <div class="toggle-row">
+            <span class="toggle-label">Unwatched</span>
+            <label class="toggle-switch" aria-label="Toggle watched status">
+              <input class="seen-toggle" type="checkbox" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="card-actions">
+            <button class="watch-btn btn btn-info" type="button">Watch</button>
+            <button class="edit-btn btn btn-secondary" type="button">Edit</button>
+            <button class="delete-btn btn btn-danger" type="button">Delete</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
