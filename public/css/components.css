@@ -558,6 +558,32 @@
     gap: 8px;
   }
 
+  .master-item .toggle-row {
+    gap: 8px;
+    align-items: center;
+  }
+
+  .master-item .card-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .master-item .card-actions .btn {
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 6px;
+    font-size: 0.78rem;
+    line-height: 1.1;
+  }
+
+  .master-item .drag-pill {
+    min-height: 22px;
+    padding: 2px 8px;
+    font-size: 0.66rem;
+  }
+
   .master-item .order-badge {
     display: inline-flex;
   }
