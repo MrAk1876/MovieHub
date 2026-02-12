@@ -87,35 +87,69 @@ function findInsertionIndexForSection(sortedMovies, section) {
   return firstWatched === -1 ? sortedMovies.length : firstWatched;
 }
 
+function isHorizontalDropMode(container) {
+  return (
+    window.matchMedia("(max-width: 768px)").matches &&
+    container &&
+    !container.classList.contains("master-grid")
+  );
+}
+
 function showDropIndicator(container, index) {
   const cards = [...container.querySelectorAll(".movie-card:not(.dragging)")];
   const containerRect = container.getBoundingClientRect();
-  const left = containerRect.left + 10;
-  const width = Math.max(containerRect.width - 20, 40);
+  const horizontal = isHorizontalDropMode(container);
 
-  let top = containerRect.top + 12;
-  if (cards.length > 0) {
-    if (index >= cards.length) {
-      top = cards[cards.length - 1].getBoundingClientRect().bottom + 2;
-    } else {
-      top = cards[index].getBoundingClientRect().top - 2;
+  if (horizontal) {
+    let left = containerRect.left + 10;
+    const top = containerRect.top + 10;
+    const height = Math.max(containerRect.height - 20, 44);
+
+    if (cards.length > 0) {
+      if (index >= cards.length) {
+        left = cards[cards.length - 1].getBoundingClientRect().right + 2;
+      } else {
+        left = cards[index].getBoundingClientRect().left - 2;
+      }
     }
+
+    dropIndicator.style.left = `${Math.max(0, left)}px`;
+    dropIndicator.style.top = `${Math.max(0, top)}px`;
+    dropIndicator.style.width = "3px";
+    dropIndicator.style.height = `${height}px`;
+  } else {
+    const left = containerRect.left + 10;
+    const width = Math.max(containerRect.width - 20, 40);
+    let top = containerRect.top + 12;
+
+    if (cards.length > 0) {
+      if (index >= cards.length) {
+        top = cards[cards.length - 1].getBoundingClientRect().bottom + 2;
+      } else {
+        top = cards[index].getBoundingClientRect().top - 2;
+      }
+    }
+
+    dropIndicator.style.left = `${Math.max(0, left)}px`;
+    dropIndicator.style.top = `${Math.max(0, top)}px`;
+    dropIndicator.style.width = `${width}px`;
+    dropIndicator.style.height = "3px";
   }
 
-  dropIndicator.style.left = `${Math.max(0, left)}px`;
-  dropIndicator.style.width = `${width}px`;
-  dropIndicator.style.top = `${Math.max(0, top)}px`;
   dropIndicator.classList.add("visible");
 }
 
-// Calculates insertion index based on pointer Y. No DOM element swapping is done.
-export function getDropIndex(container, mouseY) {
+// Calculates insertion index by active axis:
+// mobile rows use X position, desktop lists/grids use Y position.
+export function getDropIndex(container, mouseX, mouseY) {
   const cards = [...container.querySelectorAll(".movie-card:not(.dragging)")];
+  const horizontal = isHorizontalDropMode(container);
+  const pointerPosition = horizontal ? mouseX : mouseY;
 
   for (let index = 0; index < cards.length; index += 1) {
     const rect = cards[index].getBoundingClientRect();
-    const midpoint = rect.top + rect.height / 2;
-    if (mouseY < midpoint) {
+    const midpoint = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
+    if (pointerPosition < midpoint) {
       return index;
     }
   }
@@ -123,13 +157,13 @@ export function getDropIndex(container, mouseY) {
   return cards.length;
 }
 
-function getDropContext(target, mouseY) {
+function getDropContext(target, mouseX, mouseY) {
   const grid = target?.closest(".movies-grid[data-section]");
   if (!grid) return null;
 
   const section = grid.dataset.section;
   const cards = [...grid.querySelectorAll(".movie-card:not(.dragging)")];
-  const index = getDropIndex(grid, mouseY);
+  const index = getDropIndex(grid, mouseX, mouseY);
   const targetCard = cards[index] || null;
 
   return {
@@ -228,7 +262,7 @@ function handleDragStart(event) {
 function handleDragEnter(event) {
   if (!draggedMovieId) return;
 
-  const context = getDropContext(event.target, event.clientY);
+  const context = getDropContext(event.target, event.clientX, event.clientY);
   if (!context) return;
 
   currentDropContext = context;
@@ -240,7 +274,7 @@ function handleDragOver(event) {
   event.preventDefault();
   if (!draggedMovieId) return;
 
-  const context = getDropContext(event.target, event.clientY);
+  const context = getDropContext(event.target, event.clientX, event.clientY);
   if (!context) return;
 
   currentDropContext = context;
@@ -269,7 +303,7 @@ async function handleDrop(event) {
   event.preventDefault();
   if (!draggedMovieId) return;
 
-  const context = getDropContext(event.target, event.clientY) || currentDropContext;
+  const context = getDropContext(event.target, event.clientX, event.clientY) || currentDropContext;
   await finalizeDrop(context);
 }
 
@@ -339,7 +373,7 @@ function handleDragEnd() {
 function getDropContextFromPoint(clientX, clientY) {
   const target = document.elementFromPoint(clientX, clientY);
   if (!target) return null;
-  return getDropContext(target, clientY);
+  return getDropContext(target, clientX, clientY);
 }
 
 function handleTouchStart(event) {

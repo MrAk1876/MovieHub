@@ -1,11 +1,9 @@
-/* Responsive breakpoints (mobile-first):
-   Mobile: 0-640px
-   Tablet: 641-1024px
-   Desktop: 1025px+
-   Large: 1440px+ */
+/* Responsive breakpoints:
+   Mobile horizontal system: <= 768px
+   Desktop/grid system: >= 769px */
 
-/* Mobile compaction: avoid overflow and keep controls easy to tap */
-@media (max-width: 640px) {
+/* Mobile: section header stays full-width, movie rows become horizontal scrollers. */
+@media (max-width: 768px) {
   .header-inner {
     padding: 10px 12px;
     gap: 8px;
@@ -13,6 +11,10 @@
 
   .brand-block h1 {
     letter-spacing: 0;
+  }
+
+  .header-actions {
+    gap: 8px;
   }
 
   .home-toolbar {
@@ -35,10 +37,67 @@
     border-radius: 16px;
     padding: 12px;
   }
+
+  .movie-container .movies-grid:not(.master-grid) {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 16px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .movie-container .movies-grid:not(.master-grid)::-webkit-scrollbar {
+    display: none;
+  }
+
+  .movie-container .movies-grid:not(.master-grid) {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .movie-container .movies-grid:not(.master-grid) .movie-card {
+    flex: 0 0 auto;
+    width: clamp(160px, 60vw, 220px);
+    scroll-snap-align: start;
+  }
+
+  .movie-container .movies-grid:not(.master-grid) .poster {
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+  }
+
+  .movie-container .movies-grid:not(.master-grid) .card-content {
+    padding: 10px;
+    gap: 9px;
+  }
+
+  .movie-container .movies-grid:not(.master-grid) .movie-title {
+    font-size: clamp(0.84rem, 1vw, 0.96rem);
+  }
+
+  .movie-container .movies-grid:not(.master-grid) .toggle-label,
+  .movie-container .movies-grid:not(.master-grid) .movie-year,
+  .movie-container .movies-grid:not(.master-grid) .status-chip {
+    font-size: clamp(0.68rem, 0.8vw, 0.75rem);
+  }
+
+  /* Keep master-list cards compact on smaller widths. */
+  .movie-card.master-card {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-card.master-card .poster {
+    min-height: 0;
+    aspect-ratio: 2 / 3;
+    max-height: 380px;
+  }
 }
 
-/* Tablet: balanced header row */
-@media (min-width: 641px) {
+/* Desktop/tablet+: restore grid behavior for movie sections. */
+@media (min-width: 769px) {
   .header-inner {
     display: grid;
     grid-template-columns: auto minmax(240px, 1fr) auto;
@@ -66,26 +125,25 @@
     flex-wrap: wrap;
   }
 
+  .movie-container .movies-grid:not(.master-grid) {
+    display: grid;
+    overflow: visible;
+    scroll-snap-type: none;
+    -webkit-overflow-scrolling: auto;
+    padding-bottom: 0;
+  }
+
+  .movie-container .movies-grid:not(.master-grid) .movie-card {
+    width: auto;
+    flex: initial;
+  }
+
   .add-modal {
     padding: 22px;
     border-radius: 20px;
   }
 }
 
-/* Keep master cards compact on touch/tablet widths */
-@media (max-width: 1024px) {
-  .movie-card.master-card {
-    grid-template-columns: 1fr;
-  }
-
-  .movie-card.master-card .poster {
-    min-height: 0;
-    aspect-ratio: 2 / 3;
-    max-height: 380px;
-  }
-}
-
-/* Desktop: wider canvas */
 @media (min-width: 1025px) {
   .header-inner {
     grid-template-columns: auto minmax(300px, 560px) auto;
@@ -108,7 +166,6 @@
   }
 }
 
-/* Large screens */
 @media (min-width: 1440px) {
   .view-container {
     max-width: 1600px;
