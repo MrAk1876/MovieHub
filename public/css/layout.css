@@ -7,46 +7,43 @@
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 80;
+  z-index: 70;
   border-bottom: 1px solid var(--border-color);
-  background: var(--bg-nav);
-  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--surface-glass) 92%, transparent);
+  backdrop-filter: blur(14px);
   box-shadow: var(--shadow-sm);
 }
 
 .header-inner {
-  width: 100%;
-  max-width: 1500px;
+  width: min(100%, var(--container-max));
   margin: 0 auto;
-  padding: clamp(10px, 2vw, 16px) clamp(12px, 3vw, 30px);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(8px, 1.5vw, 14px);
+  padding: var(--header-padding-y) var(--header-padding-x);
+  display: grid;
+  grid-template-columns: auto minmax(280px, 1fr) auto;
+  align-items: center;
+  gap: var(--gap);
 }
 
 .brand-block {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
 .header-search-wrap {
-  display: flex;
   width: 100%;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: clamp(8px, 1.2vw, 12px);
 }
 
 .view-container {
-  width: min(100%, 1500px);
+  width: min(100%, var(--container-max));
   margin: 0 auto;
-  padding: clamp(12px, 2vw, 28px) clamp(12px, 2.4vw, 30px) clamp(22px, 3vw, 44px);
+  padding: clamp(14px, 2.5vw, 32px) clamp(12px, 2.6vw, 34px) clamp(28px, 4vw, 44px);
   flex: 1;
 }
 
@@ -56,62 +53,130 @@
 
 .home-shell {
   display: grid;
-  gap: clamp(12px, 1.6vw, 22px);
+  gap: var(--gap);
 }
 
 .home-toolbar {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(8px, 1.2vw, 14px);
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.filters-group,
+.chips-wrap {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.view-toggle-group,
+.mode-switch {
+  display: flex;
+  gap: 8px;
+  flex: 0 1 auto;
+  min-width: 0;
+  width: auto;
+  max-width: 100%;
 }
 
 .section {
-  background: var(--bg-surface);
+  width: 100%;
+  position: relative;
+  overflow: visible;
+  background: var(--surface-glass);
   border: 1px solid var(--border-color);
-  border-radius: 18px;
+  border-radius: var(--radius);
+  padding: var(--gap);
+  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm);
-  padding: clamp(12px, 1.8vw, 24px);
 }
 
-.section + .section {
-  margin-top: clamp(12px, 1.4vw, 22px);
+.section-inner {
+  display: grid;
+  gap: clamp(10px, 1.5vw, 16px);
+  overflow: visible;
 }
 
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(8px, 1vw, 12px);
-  padding-bottom: clamp(8px, 1vw, 12px);
+  gap: 10px;
+  padding-bottom: clamp(8px, 1.2vw, 12px);
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: clamp(10px, 1.2vw, 16px);
 }
 
-.movies-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(12px, 1.5vw, 24px);
-}
-
-.master-grid {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.2vw, 16px);
-  max-width: 1080px;
-  margin: 0 auto;
-}
-
-.movie-container {
-  container-type: inline-size;
-  container-name: movie-grid;
+.movie-container,
+.movies-grid,
+.master-grid,
+.master-list {
   width: 100%;
 }
 
+/* Section View rails: always horizontal */
+.movie-grid.horizontal-scroll-grid {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 20px;
+  width: max-content;
+  min-width: 100%;
+  padding: 20px;
+  overflow: visible;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scroll-padding-left: 20px;
+}
+
+.movie-grid.horizontal-scroll-grid .movie-card {
+  flex: 0 0 300px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  align-self: stretch;
+}
+
+/* Master View: always vertical list */
+.master-grid,
+.master-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  overflow-x: visible;
+}
+
 .section-wrapper {
+  width: 100%;
   position: relative;
-  display: grid;
-  gap: 8px;
+  isolation: isolate;
+}
+
+.movies-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.movies-scroll-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .section-wrapper::before,
@@ -119,22 +184,22 @@
   content: "";
   position: absolute;
   top: 0;
-  bottom: 18px;
-  width: 56px;
+  bottom: 0;
+  width: 40px;
   pointer-events: none;
+  z-index: 5;
   opacity: 0;
-  transition: opacity 0.22s ease;
-  z-index: 4;
+  transition: opacity 0.2s ease;
 }
 
 .section-wrapper::before {
   left: 0;
-  background: linear-gradient(to right, var(--bg-surface), transparent);
+  background: linear-gradient(to right, var(--edge-fade-color), transparent);
 }
 
 .section-wrapper::after {
   right: 0;
-  background: linear-gradient(to left, var(--bg-surface), transparent);
+  background: linear-gradient(to left, var(--edge-fade-color), transparent);
 }
 
 .section-wrapper.is-scrollable.can-scroll-left::before {
@@ -145,65 +210,84 @@
   opacity: 1;
 }
 
-.horizontal-scroll-grid {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  gap: clamp(12px, 1.2vw, 18px);
-  padding: 0 clamp(28px, 2.4vw, 42px) 10px 2px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.horizontal-scroll-grid::-webkit-scrollbar {
-  display: none;
+.scroll-left {
+  left: 10px;
 }
 
-.horizontal-scroll-grid {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.scroll-right {
+  right: 10px;
 }
 
-.horizontal-scroll-grid .movie-card {
-  flex: 0 0 auto;
-  width: clamp(210px, 18vw, 270px);
-  scroll-snap-align: start;
+.section-wrapper.is-scrollable .scroll-arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scroll-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .scroll-indicator {
   height: 3px;
   border-radius: 999px;
-  background: var(--bg-chip);
+  background: color-mix(in srgb, var(--surface-muted) 85%, transparent);
+  margin: 4px 2px 0;
   overflow: hidden;
-  margin: 0 clamp(14px, 1.6vw, 24px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.section-wrapper.is-scrollable .scroll-indicator {
+  opacity: 1;
 }
 
 .scroll-progress {
   width: 0%;
   height: 100%;
-  border-radius: 999px;
+  border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), #60a5fa);
-  transition: width 0.2s ease;
+  transition: width 0.18s ease;
 }
 
 .scroll-sentinel {
-  height: 8px;
+  width: 100%;
+  height: 2px;
 }
 
 .loading-row {
+  min-height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 1vw, 12px);
-  min-height: 24px;
+  gap: 10px;
 }
 
 .status-message {
-  min-height: 20px;
-  text-align: center;
+  min-height: 22px;
   color: var(--text-secondary);
+  text-align: center;
 }
 
 .status-message.error {
@@ -211,41 +295,36 @@
 }
 
 .add-view-shell {
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 160px);
   display: grid;
   place-items: center;
 }
 
 .add-modal {
-  width: 100%;
-  max-width: 600px;
-  background: var(--bg-surface);
+  width: min(100%, 620px);
+  background: var(--surface-glass);
   border: 1px solid var(--border-color);
-  border-radius: 18px;
-  box-shadow: var(--shadow-lg);
-  padding: clamp(16px, 2vw, 30px);
-}
-
-.add-modal h2 {
-  margin-bottom: clamp(12px, 1.5vw, 18px);
-  font-weight: 800;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(12px);
+  padding: clamp(18px, 2.4vw, 30px);
 }
 
 .add-modal form {
   display: grid;
-  gap: clamp(10px, 1.3vw, 16px);
+  gap: clamp(10px, 1.4vw, 16px);
 }
 
 .add-modal label {
   display: grid;
-  gap: clamp(6px, 0.8vw, 9px);
-  font-weight: 600;
-  color: var(--text-secondary);
+  gap: 7px;
 }
 
 .form-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: clamp(8px, 1vw, 12px);
-  margin-top: 4px;
+  gap: 10px;
+}
+
+.form-actions .btn {
+  flex: 1;
 }

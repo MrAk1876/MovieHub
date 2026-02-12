@@ -2,21 +2,24 @@ const SCROLL_STEP = 300;
 let hasResizeListener = false;
 
 function getWrapperParts(wrapper) {
+  const grid = wrapper.querySelector(".horizontal-scroll-grid");
+  const wrapperScroll = wrapper.querySelector(".movies-scroll-wrapper");
   return {
-    grid: wrapper.querySelector(".horizontal-scroll-grid"),
+    grid,
+    scrollContainer: wrapperScroll || grid,
     leftButton: wrapper.querySelector(".scroll-left"),
     rightButton: wrapper.querySelector(".scroll-right"),
     progress: wrapper.querySelector(".scroll-progress"),
   };
 }
 
-function getScrollMetrics(grid) {
-  if (!grid) {
+function getScrollMetrics(scrollContainer) {
+  if (!scrollContainer) {
     return { scrollLeft: 0, maxScrollLeft: 0, progress: 0, isScrollable: false };
   }
 
-  const maxScrollLeft = Math.max(0, grid.scrollWidth - grid.clientWidth);
-  const scrollLeft = Math.max(0, Math.min(grid.scrollLeft, maxScrollLeft));
+  const maxScrollLeft = Math.max(0, scrollContainer.scrollWidth - scrollContainer.clientWidth);
+  const scrollLeft = Math.max(0, Math.min(scrollContainer.scrollLeft, maxScrollLeft));
   const progress = maxScrollLeft > 0 ? scrollLeft / maxScrollLeft : 0;
 
   return {
@@ -30,10 +33,10 @@ function getScrollMetrics(grid) {
 function updateWrapperState(wrapper) {
   if (!wrapper || wrapper.offsetParent === null) return;
 
-  const { grid, leftButton, rightButton, progress } = getWrapperParts(wrapper);
-  if (!grid) return;
+  const { scrollContainer, leftButton, rightButton, progress } = getWrapperParts(wrapper);
+  if (!scrollContainer) return;
 
-  const metrics = getScrollMetrics(grid);
+  const metrics = getScrollMetrics(scrollContainer);
   const canScrollLeft = metrics.scrollLeft > 1;
   const canScrollRight = metrics.scrollLeft < metrics.maxScrollLeft - 1;
 
@@ -58,18 +61,18 @@ function bindWrapper(wrapper) {
   if (!wrapper || wrapper.dataset.scrollBound === "1") return;
 
   wrapper.dataset.scrollBound = "1";
-  const { grid, leftButton, rightButton } = getWrapperParts(wrapper);
-  if (!grid) return;
+  const { scrollContainer, leftButton, rightButton } = getWrapperParts(wrapper);
+  if (!scrollContainer) return;
 
   leftButton?.addEventListener("click", () => {
-    grid.scrollBy({ left: -SCROLL_STEP, behavior: "smooth" });
+    scrollContainer.scrollBy({ left: -SCROLL_STEP, behavior: "smooth" });
   });
 
   rightButton?.addEventListener("click", () => {
-    grid.scrollBy({ left: SCROLL_STEP, behavior: "smooth" });
+    scrollContainer.scrollBy({ left: SCROLL_STEP, behavior: "smooth" });
   });
 
-  grid.addEventListener(
+  scrollContainer.addEventListener(
     "scroll",
     () => {
       updateWrapperState(wrapper);

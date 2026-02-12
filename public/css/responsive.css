@@ -1,351 +1,31 @@
-/* Responsive structure:
-   <=768px: compact mobile layout, arrows hidden
-   >=769px: desktop/tablet with horizontal-row arrows */
+@media (max-width: 1024px) {
+  .header-inner {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .brand-block {
+    justify-content: center;
+  }
+
+  .header-actions {
+    justify-content: space-between;
+  }
+
+  .home-toolbar {
+    align-items: stretch;
+  }
+
+  .view-container {
+    width: 100%;
+    max-width: none;
+    padding-inline: clamp(12px, 2vw, 20px);
+  }
+}
 
 @media (max-width: 768px) {
   .header-inner {
     padding: 10px 12px;
-    gap: 8px;
-  }
-
-  .brand-block h1 {
-    letter-spacing: 0;
-  }
-
-  .header-actions {
-    gap: 8px;
-  }
-
-  .home-toolbar {
-    gap: 8px;
-  }
-
-  .mode-switch,
-  .chips-wrap {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .mode-btn,
-  .chip {
-    min-height: 36px;
-    padding-inline: 10px;
-  }
-
-  .section {
-    border-radius: 16px;
-    padding: 12px;
-    position: relative;
-    padding-bottom: 24px;
-    margin-bottom: 28px;
-  }
-
-  .section + .section {
-    margin-top: 0;
-  }
-
-  .section:last-of-type {
-    margin-bottom: 0;
-  }
-
-  .section-wrapper {
-    position: static;
-    gap: 0;
-    padding-bottom: 14px;
-  }
-
-  .section-wrapper::before,
-  .section-wrapper::after {
-    display: none;
-  }
-
-  /* Compact Netflix-style horizontal rail on mobile. */
-  .horizontal-scroll-grid {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 12px;
-    padding: 0 16px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .horizontal-scroll-grid .movie-card {
-    flex: 0 0 85%;
-    max-width: 260px;
-    width: clamp(160px, 60vw, 220px);
-    height: min(420px, 75vh);
-    border-radius: 16px;
-    display: grid;
-    grid-template-rows: 260px minmax(0, 1fr);
-    scroll-snap-align: start;
-  }
-
-  .horizontal-scroll-grid .movie-card .card-media {
-    height: 260px;
-    max-height: 260px;
-  }
-
-  .horizontal-scroll-grid .movie-card .poster {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 2 / 3;
-    max-height: 260px;
-    object-fit: cover;
-    transform: none;
-  }
-
-  .horizontal-scroll-grid .card-content {
-    padding: 10px 10px 8px;
-    gap: 7px;
-    align-content: start;
-  }
-
-  .horizontal-scroll-grid .movie-title {
-    font-size: clamp(0.82rem, 0.95vw, 0.94rem);
-    line-height: 1.22;
-  }
-
-  .horizontal-scroll-grid .movie-year,
-  .horizontal-scroll-grid .status-chip {
-    font-size: clamp(0.66rem, 0.78vw, 0.73rem);
-    padding: 3px 8px;
-    margin-top: 0;
-  }
-
-  /* Remove duplicate watched/unwatched text line on compact mobile cards. */
-  .horizontal-scroll-grid .toggle-label {
-    display: none;
-  }
-
-  .horizontal-scroll-grid .toggle-row {
-    margin-top: auto;
-    gap: 8px;
-  }
-
-  .horizontal-scroll-grid .card-actions {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .horizontal-scroll-grid .watch-btn {
-    flex: 1 1 100%;
-    width: 100%;
-    max-width: 100%;
-    min-height: 38px;
-    padding: 7px 10px;
-    font-size: 0.78rem;
-  }
-
-  .horizontal-scroll-grid .secondary-actions {
-    display: inline-flex;
-    gap: 8px;
-    width: auto;
-    max-width: 100%;
-  }
-
-  .horizontal-scroll-grid .secondary-actions .edit-btn,
-  .horizontal-scroll-grid .secondary-actions .delete-btn,
-  .horizontal-scroll-grid .edit-btn,
-  .horizontal-scroll-grid .delete-btn {
-    flex: 0 0 38px;
-    width: 38px;
-    min-height: 38px;
-    height: 38px;
-    max-width: 38px;
-    padding: 0;
-    font-size: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .horizontal-scroll-grid .edit-btn::before {
-    content: "\270E";
-    font-size: 0.88rem;
-    font-weight: 700;
-  }
-
-  .horizontal-scroll-grid .delete-btn::before {
-    content: "\2715";
-    font-size: 0.88rem;
-    font-weight: 700;
-  }
-
-  .horizontal-scroll-grid .watched-pill {
-    display: none !important;
-  }
-
-  .horizontal-scroll-grid .drag-pill {
-    min-height: 22px;
-    padding: 2px 8px;
-    font-size: 0.64rem;
-  }
-
-  /* Keep master-list cards compact and lighter on mobile. */
-  .master-item {
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 16px;
-  }
-
-  .master-item .order-number {
-    flex-basis: 26px;
-    font-size: 0.96rem;
-    opacity: 0.74;
-  }
-
-  .master-item .card-media,
-  .master-item .poster {
-    width: 80px;
-    flex-basis: 80px;
-    max-height: 120px;
-  }
-
-  .master-item .card-media {
-    min-width: 80px;
-  }
-
-  .master-item .card-content {
-    padding: 0;
-    gap: 8px;
-  }
-
-  .master-item .toggle-label {
-    display: none;
-  }
-
-  .master-item .card-actions {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    min-width: 0;
-  }
-
-  .master-item .watch-btn {
-    flex: 1 1 100%;
-    width: 100%;
-    max-width: 100%;
-    min-height: 36px;
-    height: 36px;
-    padding: 7px 8px;
-    font-size: 0.76rem;
-  }
-
-  .master-item .secondary-actions {
-    display: inline-flex;
-    gap: 6px;
-    width: auto;
-    max-width: 100%;
-  }
-
-  .master-item .secondary-actions .edit-btn,
-  .master-item .secondary-actions .delete-btn,
-  .master-item .edit-btn,
-  .master-item .delete-btn {
-    flex: 0 0 36px;
-    width: 36px;
-    max-width: 36px;
-    min-height: 36px;
-    height: 36px;
-    padding: 0;
-    font-size: 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .master-item .edit-btn::before {
-    content: "\270E";
-    font-size: 0.84rem;
-    font-weight: 700;
-  }
-
-  .master-item .delete-btn::before {
-    content: "\2715";
-    font-size: 0.84rem;
-    font-weight: 700;
-  }
-
-  .master-item .drag-pill {
-    min-height: 20px;
-    padding: 1px 7px;
-    font-size: 0.64rem;
-  }
-
-  .master-item .order-badge {
-    display: inline-flex;
-  }
-
-  /* Place progress bar below the rail, not on top of cards. */
-  .section .scroll-indicator {
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 8px;
-    margin: 0;
-  }
-
-  .scroll-arrow {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Keep badges readable and collision-free on very narrow poster widths. */
-  .master-item .order-badge {
-    top: 6px;
-    left: 6px;
-    padding: 3px 6px;
-    font-size: 0.62rem;
-  }
-
-  .movie-card .drag-pill,
-  .movie-card .drag-badge {
-    top: 6px;
-    right: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    min-height: 24px;
-    max-width: 24px;
-    padding: 0;
-    font-size: 0;
-    line-height: 1;
-    border-radius: 999px;
-  }
-
-  .movie-card .drag-pill::before,
-  .movie-card .drag-badge::before {
-    content: "\2195";
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .movie-card:hover .order-badge,
-  .movie-card:focus-within .order-badge {
-    box-shadow: none;
-    transform: none;
-  }
-}
-
-@media (min-width: 769px) {
-  .header-inner {
-    display: grid;
-    grid-template-columns: auto minmax(240px, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
   }
 
   .brand-block {
@@ -353,55 +33,172 @@
   }
 
   .header-actions {
-    justify-content: flex-end;
-  }
-
-  .view-container {
-    padding: 22px 20px 34px;
-  }
-
-  .home-toolbar {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
+    gap: 8px;
   }
 
-  .add-modal {
-    padding: 22px;
-    border-radius: 20px;
+  .open-add-btn,
+  #openAddViewBtn {
+    min-height: 40px;
   }
-}
 
-@media (min-width: 1025px) {
-  .header-inner {
-    grid-template-columns: auto minmax(300px, 560px) auto;
-    gap: 22px;
-    padding: 14px 34px;
+  .home-toolbar,
+  .controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .chips-wrap,
+  .filters-group {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .mode-switch,
+  .view-toggle-group {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .mode-switch .mode-btn,
+  .view-toggle-group button {
+    flex: 1;
   }
 
   .view-container {
-    padding: 32px 34px 44px;
+    padding: 12px;
   }
 
   .section {
-    border-radius: 22px;
-    padding: 20px;
+    padding: 14px;
   }
 
-  .horizontal-scroll-grid .movie-card {
-    width: clamp(220px, 17vw, 290px);
+  /* Section View: compact horizontal rail on mobile */
+  .movie-grid.horizontal-scroll-grid {
+    gap: 16px;
+    padding: 16px;
+    scroll-padding-left: 16px;
   }
 
-  .add-modal {
-    padding: 30px;
-    border-radius: 24px;
+  .movie-grid.horizontal-scroll-grid .movie-card {
+    flex: 0 0 clamp(200px, 68vw, 240px);
+    width: clamp(200px, 68vw, 240px);
+    min-width: clamp(200px, 68vw, 240px);
+    max-width: clamp(200px, 68vw, 240px);
+  }
+
+  /* Section View buttons: icon mode */
+  .movie-grid.horizontal-scroll-grid .watch-btn {
+    width: 100%;
+    min-height: 38px;
+    height: 38px;
+  }
+
+  .movie-grid.horizontal-scroll-grid .button-group,
+  .movie-grid.horizontal-scroll-grid .secondary-actions,
+  .movie-grid.horizontal-scroll-grid .edit-delete-row,
+  .movie-grid.horizontal-scroll-grid .action-row {
+    justify-content: center;
+  }
+
+  .movie-grid.horizontal-scroll-grid .secondary-actions button,
+  .movie-grid.horizontal-scroll-grid .edit-delete-row button,
+  .movie-grid.horizontal-scroll-grid .edit-btn,
+  .movie-grid.horizontal-scroll-grid .delete-btn {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0;
+    font-size: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .movie-grid.horizontal-scroll-grid .watch-btn {
+    font-size: var(--button-text-size);
+    width: 100%;
+    height: 38px;
+    min-height: 38px;
+    padding: 0 12px;
+  }
+
+  .movie-grid.horizontal-scroll-grid .edit-btn::before {
+    content: "\270E";
+    font-size: 16px;
+  }
+
+  .movie-grid.horizontal-scroll-grid .delete-btn::before {
+    content: "\2715";
+    font-size: 16px;
+  }
+
+  .movie-grid.horizontal-scroll-grid .watch-btn::before {
+    content: none;
   }
 }
 
-@media (min-width: 1440px) {
-  .view-container {
-    max-width: 1600px;
-    padding-inline: 40px;
+@media (max-width: 420px) {
+  .mode-btn,
+  .chip {
+    padding-inline: 10px;
+  }
+
+  .search-input,
+  .add-modal input {
+    min-height: 40px;
+  }
+
+  .movie-grid.horizontal-scroll-grid .movie-card {
+    flex-basis: min(240px, 74vw);
+    width: min(240px, 74vw);
+    min-width: min(240px, 74vw);
+    max-width: min(240px, 74vw);
+  }
+
+  .master-item,
+  .master-card {
+    grid-template-columns: 34px 68px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .master-item .card-media,
+  .master-card .card-media,
+  .master-item .poster-wrapper,
+  .master-card .poster-wrapper {
+    width: 68px;
+    max-width: 68px;
+  }
+
+  .master-item .movie-title,
+  .master-card .movie-title {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .master-item .watch-btn,
+  .master-card .watch-btn,
+  .master-item .edit-btn,
+  .master-card .edit-btn,
+  .master-item .delete-btn,
+  .master-card .delete-btn {
+    min-height: 32px;
+    height: 32px;
+    padding-inline: 8px;
+    font-size: 0.76rem;
+  }
+
+  .master-item .secondary-actions,
+  .master-card .secondary-actions,
+  .master-item .edit-delete-row,
+  .master-card .edit-delete-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 6px;
   }
 }

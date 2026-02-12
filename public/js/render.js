@@ -93,10 +93,10 @@ function refreshDynamicRefs() {
 function renderHomeShell() {
   elements.viewContainer.innerHTML = `
     <section id="homeView" data-view="home" class="view-shell home-shell">
-      <div class="home-toolbar">
-        <div id="yearChips" class="chips-wrap"></div>
+      <div class="home-toolbar controls-row">
+        <div id="yearChips" class="chips-wrap filters-group"></div>
 
-        <div id="orderModeSwitch" class="mode-switch">
+        <div id="orderModeSwitch" class="mode-switch view-toggle-group">
           <button id="sectionModeBtn" class="mode-btn" type="button" data-mode="section">
             Section View
           </button>
@@ -113,58 +113,68 @@ function renderHomeShell() {
       <div id="statusMessage" class="status-message"></div>
 
       <section id="masterSection" class="section movie-section hidden" data-section="master">
-        <div class="section-header">
-          <h2>Master List</h2>
-          <span id="masterCount" class="count-badge">0</span>
-        </div>
-        <div class="movie-container master-container">
-          <div id="masterGrid" class="movies-grid master-grid master-list" data-section="master"></div>
+        <div class="section-inner">
+          <div class="section-header">
+            <h2>Master List</h2>
+            <span id="masterCount" class="count-badge">0</span>
+          </div>
+          <div class="movie-container master-container">
+            <div id="masterGrid" class="movies-grid master-grid master-list" data-section="master"></div>
+          </div>
         </div>
       </section>
 
       <section id="unwatchedSection" class="section movie-section" data-section="unwatched">
-        <div class="section-header">
-          <h2>Unwatched Movies</h2>
-          <span id="unwatchedCount" class="count-badge">0</span>
-        </div>
-        <div class="section-wrapper">
-          <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
-            &#10094;
-          </button>
-          <div class="movie-container">
-            <div
-              id="unwatchedGrid"
-              class="movies-grid movie-grid horizontal-scroll-grid"
-              data-section="unwatched"
-            ></div>
+        <div class="section-inner">
+          <div class="section-header">
+            <h2>Unwatched Movies</h2>
+            <span id="unwatchedCount" class="count-badge">0</span>
           </div>
-          <button class="scroll-arrow scroll-right" type="button" aria-label="Scroll right">
-            &#10095;
-          </button>
-          <div class="scroll-indicator"><div class="scroll-progress"></div></div>
+          <div class="section-wrapper">
+            <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
+              &#10094;
+            </button>
+            <div class="movies-scroll-wrapper">
+              <div class="movie-container">
+                <div
+                  id="unwatchedGrid"
+                  class="movies-grid movie-grid horizontal-scroll-grid"
+                  data-section="unwatched"
+                ></div>
+              </div>
+            </div>
+            <button class="scroll-arrow scroll-right" type="button" aria-label="Scroll right">
+              &#10095;
+            </button>
+            <div class="scroll-indicator"><div class="scroll-progress"></div></div>
+          </div>
         </div>
       </section>
 
       <section id="watchedSection" class="section movie-section" data-section="watched">
-        <div class="section-header">
-          <h2>Watched Movies</h2>
-          <span id="watchedCount" class="count-badge">0</span>
-        </div>
-        <div class="section-wrapper">
-          <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
-            &#10094;
-          </button>
-          <div class="movie-container">
-            <div
-              id="watchedGrid"
-              class="movies-grid movie-grid horizontal-scroll-grid"
-              data-section="watched"
-            ></div>
+        <div class="section-inner">
+          <div class="section-header">
+            <h2>Watched Movies</h2>
+            <span id="watchedCount" class="count-badge">0</span>
           </div>
-          <button class="scroll-arrow scroll-right" type="button" aria-label="Scroll right">
-            &#10095;
-          </button>
-          <div class="scroll-indicator"><div class="scroll-progress"></div></div>
+          <div class="section-wrapper">
+            <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
+              &#10094;
+            </button>
+            <div class="movies-scroll-wrapper">
+              <div class="movie-container">
+                <div
+                  id="watchedGrid"
+                  class="movies-grid movie-grid horizontal-scroll-grid"
+                  data-section="watched"
+                ></div>
+              </div>
+            </div>
+            <button class="scroll-arrow scroll-right" type="button" aria-label="Scroll right">
+              &#10095;
+            </button>
+            <div class="scroll-indicator"><div class="scroll-progress"></div></div>
+          </div>
         </div>
       </section>
 

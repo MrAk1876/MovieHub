@@ -1,44 +1,45 @@
-/* Fluid typography scale powered by clamp().
-   This keeps text legible and proportional from small phones to large desktops. */
-
 :root {
-  --font-size-body: clamp(0.85rem, 1vw, 1rem);
-  --font-size-app-title: clamp(1.8rem, 3vw, 2.8rem);
-  --font-size-section-title: clamp(1.2rem, 2vw, 1.8rem);
-  --font-size-movie-title: clamp(0.9rem, 1.2vw, 1.1rem);
-  --font-size-meta: clamp(0.75rem, 0.9vw, 0.9rem);
+  --app-title-size: clamp(1.8rem, 3vw, 2.8rem);
+  --section-title-size: clamp(1.2rem, 2vw, 1.8rem);
+  --movie-title-size: clamp(1rem, 1.4vw, 1.2rem);
+  --button-text-size: clamp(0.8rem, 1vw, 0.94rem);
 }
 
 body {
-  font-size: var(--font-size-body);
-  line-height: 1.5;
+  font-size: var(--text-size);
 }
 
 .brand-block h1 {
-  font-size: var(--font-size-app-title);
-  line-height: 1.1;
+  font-size: var(--app-title-size);
+  line-height: 1.05;
+  font-weight: 800;
   letter-spacing: 0.01em;
 }
 
 .section-header h2 {
-  font-size: var(--font-size-section-title);
+  font-size: var(--section-title-size);
   line-height: 1.2;
+  font-weight: 800;
 }
 
 .movie-title {
-  font-size: var(--font-size-movie-title);
-  line-height: 1.35;
+  font-size: var(--movie-title-size);
+  line-height: 1.3;
+  font-weight: 750;
 }
 
 .movie-year,
 .status-chip,
 .toggle-label,
-.count-badge {
-  font-size: var(--font-size-meta);
+.count-badge,
+.mode-btn,
+.chip,
+.btn,
+.search-input,
+.add-modal input {
+  font-size: var(--text-size);
 }
 
-.add-modal label span,
-.search-input::placeholder,
-.add-modal input::placeholder {
-  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+.add-modal label span {
+  font-size: clamp(0.8rem, 1vw, 0.94rem);
 }

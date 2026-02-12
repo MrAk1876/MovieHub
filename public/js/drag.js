@@ -90,7 +90,18 @@ function findInsertionIndexForSection(sortedMovies, section) {
 }
 
 function isHorizontalDropMode(container) {
-  return container?.classList?.contains("horizontal-scroll-grid");
+  if (!container) return false;
+
+  const styles = window.getComputedStyle(container);
+  const isFlexRow = styles.display.includes("flex") && styles.flexDirection.startsWith("row");
+  const hasHorizontalOverflow = container.scrollWidth - container.clientWidth > 2;
+  return isFlexRow && hasHorizontalOverflow;
+}
+
+function isGridDropMode(container) {
+  if (!container) return false;
+  const styles = window.getComputedStyle(container);
+  return styles.display.includes("grid");
 }
 
 function showDropIndicator(container, index) {
@@ -142,12 +153,38 @@ function showDropIndicator(container, index) {
 export function getDropIndex(container, mouseX, mouseY) {
   const cards = [...container.querySelectorAll(".movie-card:not(.dragging)")];
   const horizontal = isHorizontalDropMode(container);
-  const pointerPosition = horizontal ? mouseX : mouseY;
+  if (horizontal) {
+    for (let index = 0; index < cards.length; index += 1) {
+      const rect = cards[index].getBoundingClientRect();
+      const midpoint = rect.left + rect.width / 2;
+      if (mouseX < midpoint) {
+        return index;
+      }
+    }
+    return cards.length;
+  }
+
+  if (isGridDropMode(container)) {
+    for (let index = 0; index < cards.length; index += 1) {
+      const rect = cards[index].getBoundingClientRect();
+      const cardMidX = rect.left + rect.width / 2;
+
+      if (mouseY < rect.top) {
+        return index;
+      }
+
+      const pointerWithinRow = mouseY >= rect.top && mouseY <= rect.bottom;
+      if (pointerWithinRow && mouseX < cardMidX) {
+        return index;
+      }
+    }
+    return cards.length;
+  }
 
   for (let index = 0; index < cards.length; index += 1) {
     const rect = cards[index].getBoundingClientRect();
-    const midpoint = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
-    if (pointerPosition < midpoint) {
+    const midpoint = rect.top + rect.height / 2;
+    if (mouseY < midpoint) {
       return index;
     }
   }
@@ -156,7 +193,11 @@ export function getDropIndex(container, mouseX, mouseY) {
 }
 
 function getDropContext(target, mouseX, mouseY) {
-  const grid = target?.closest(".movies-grid[data-section]");
+  let grid = target?.closest(".movies-grid[data-section]");
+  if (!grid) {
+    const scrollWrapper = target?.closest(".movies-scroll-wrapper");
+    grid = scrollWrapper?.querySelector(".movies-grid[data-section]") || null;
+  }
   if (!grid) return null;
 
   const section = grid.dataset.section;

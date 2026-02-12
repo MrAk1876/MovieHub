@@ -61,25 +61,25 @@
 
     <template id="movieCardTemplate">
       <article class="card movie-card" draggable="true">
-        <div class="card-media">
+        <div class="card-media poster-wrapper">
           <img class="poster" alt="Movie poster" loading="lazy" />
           <span class="order-badge">#1</span>
           <span class="watched-pill">Watched</span>
           <span class="drag-pill drag-badge" title="Drag to reorder/move">Drag</span>
         </div>
 
-        <div class="card-content">
+        <div class="card-content movie-card-content">
           <div class="title-row">
             <span class="order-hero">1</span>
             <h3 class="movie-title"></h3>
           </div>
 
-          <div class="card-meta-row">
+          <div class="card-meta-row movie-meta">
             <p class="movie-year"></p>
             <span class="status-chip">Unwatched</span>
           </div>
 
-          <div class="toggle-row">
+          <div class="toggle-row status-row">
             <span class="toggle-label">Unwatched</span>
             <label class="toggle-switch" aria-label="Toggle watched status">
               <input class="seen-toggle" type="checkbox" />
@@ -87,9 +87,9 @@
             </label>
           </div>
 
-          <div class="card-actions action-row">
+          <div class="card-actions action-row movie-card-footer">
             <button class="watch-btn btn btn-info" type="button">Watch</button>
-            <div class="secondary-actions">
+            <div class="secondary-actions edit-delete-row">
               <button class="edit-btn btn btn-secondary" type="button">Edit</button>
               <button class="delete-btn btn btn-danger" type="button">Delete</button>
             </div>
