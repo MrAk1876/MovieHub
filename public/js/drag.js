@@ -50,6 +50,7 @@ function resetDragState() {
   document.querySelectorAll(".movie-card.dragging").forEach((card) => {
     card.classList.remove("dragging");
   });
+  document.body.classList.remove("is-dragging");
 
   hideDropIndicator();
   clearSectionHighlights();
@@ -236,6 +237,7 @@ function startDragFromCard(card) {
   currentDropContext = null;
 
   setDragging(true);
+  document.body.classList.add("is-dragging");
   renderLayout();
 
   // Delay the class to avoid inconsistent browser drag snapshots.

@@ -35,34 +35,264 @@
   .section {
     border-radius: 16px;
     padding: 12px;
+    position: relative;
+    padding-bottom: 24px;
+    margin-bottom: 28px;
   }
 
+  .section + .section {
+    margin-top: 0;
+  }
+
+  .section:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .section-wrapper {
+    position: static;
+    gap: 0;
+    padding-bottom: 14px;
+  }
+
+  .section-wrapper::before,
+  .section-wrapper::after {
+    display: none;
+  }
+
+  /* Compact Netflix-style horizontal rail on mobile. */
   .horizontal-scroll-grid {
-    gap: 14px;
-    padding-right: 24px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 12px;
+    padding: 0 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
 
   .horizontal-scroll-grid .movie-card {
+    flex: 0 0 85%;
+    max-width: 260px;
     width: clamp(160px, 60vw, 220px);
+    height: min(420px, 75vh);
+    border-radius: 16px;
+    display: grid;
+    grid-template-rows: 260px minmax(0, 1fr);
+    scroll-snap-align: start;
+  }
+
+  .horizontal-scroll-grid .movie-card .card-media {
+    height: 260px;
+    max-height: 260px;
+  }
+
+  .horizontal-scroll-grid .movie-card .poster {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 2 / 3;
+    max-height: 260px;
+    object-fit: cover;
+    transform: none;
   }
 
   .horizontal-scroll-grid .card-content {
-    padding: 10px;
-    gap: 9px;
+    padding: 10px 10px 8px;
+    gap: 7px;
+    align-content: start;
   }
 
   .horizontal-scroll-grid .movie-title {
-    font-size: clamp(0.84rem, 1vw, 0.96rem);
+    font-size: clamp(0.82rem, 0.95vw, 0.94rem);
+    line-height: 1.22;
   }
 
-  .horizontal-scroll-grid .toggle-label,
   .horizontal-scroll-grid .movie-year,
   .horizontal-scroll-grid .status-chip {
-    font-size: clamp(0.68rem, 0.8vw, 0.75rem);
+    font-size: clamp(0.66rem, 0.78vw, 0.73rem);
+    padding: 3px 8px;
+    margin-top: 0;
+  }
+
+  /* Remove duplicate watched/unwatched text line on compact mobile cards. */
+  .horizontal-scroll-grid .toggle-label {
+    display: none;
+  }
+
+  .horizontal-scroll-grid .toggle-row {
+    margin-top: auto;
+    gap: 8px;
+  }
+
+  .horizontal-scroll-grid .card-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 38px 38px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .horizontal-scroll-grid .watch-btn {
+    min-height: 38px;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+  }
+
+  .horizontal-scroll-grid .edit-btn,
+  .horizontal-scroll-grid .delete-btn {
+    width: 38px;
+    min-height: 38px;
+    height: 38px;
+    padding: 0;
+    font-size: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .horizontal-scroll-grid .edit-btn::before {
+    content: "\270E";
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .horizontal-scroll-grid .delete-btn::before {
+    content: "\2715";
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .horizontal-scroll-grid .watched-pill {
+    display: none !important;
+  }
+
+  .horizontal-scroll-grid .drag-pill {
+    min-height: 22px;
+    padding: 2px 8px;
+    font-size: 0.64rem;
+  }
+
+  /* Keep master-list cards compact and lighter on mobile. */
+  .master-item {
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .master-item .order-number {
+    flex-basis: 26px;
+    font-size: 0.96rem;
+    opacity: 0.74;
+  }
+
+  .master-item .card-media,
+  .master-item .poster {
+    width: 80px;
+    flex-basis: 80px;
+    max-height: 120px;
+  }
+
+  .master-item .card-media {
+    min-width: 80px;
+  }
+
+  .master-item .card-content {
+    padding: 0;
+    gap: 8px;
+  }
+
+  .master-item .toggle-label {
+    display: none;
+  }
+
+  .master-item .card-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 36px 36px;
+    gap: 6px;
+  }
+
+  .master-item .card-actions .btn {
+    min-height: 36px;
+    height: 36px;
+    padding: 0;
+  }
+
+  .master-item .watch-btn {
+    padding: 7px 8px;
+    font-size: 0.76rem;
+  }
+
+  .master-item .edit-btn,
+  .master-item .delete-btn {
+    font-size: 0;
+  }
+
+  .master-item .edit-btn::before {
+    content: "\270E";
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .master-item .delete-btn::before {
+    content: "\2715";
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .master-item .drag-pill {
+    min-height: 20px;
+    padding: 1px 7px;
+    font-size: 0.64rem;
+  }
+
+  .master-item .order-badge {
+    display: inline-flex;
+  }
+
+  /* Place progress bar below the rail, not on top of cards. */
+  .section .scroll-indicator {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 8px;
+    margin: 0;
   }
 
   .scroll-arrow {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Keep badges readable and collision-free on very narrow poster widths. */
+  .master-item .order-badge {
+    top: 6px;
+    left: 6px;
+    padding: 3px 6px;
+    font-size: 0.62rem;
+  }
+
+  .master-item .drag-pill,
+  .master-item .drag-badge {
+    top: 6px;
+    right: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    min-height: 22px;
+    padding: 0;
+    font-size: 0;
+    line-height: 1;
+  }
+
+  .master-item .drag-pill::before,
+  .master-item .drag-badge::before {
+    content: "\2195";
+    font-size: 10px;
+    font-weight: 800;
   }
 }
 

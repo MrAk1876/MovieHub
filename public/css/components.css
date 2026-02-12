@@ -204,7 +204,8 @@
   display: inline-flex;
 }
 
-.card-media {
+.card-media,
+.poster-wrapper {
   position: relative;
   overflow: hidden;
 }
@@ -238,27 +239,91 @@
 
 .order-badge {
   position: absolute;
-  left: 10px;
-  top: 10px;
+  top: 8px;
+  left: 8px;
+  right: auto;
+  z-index: 2;
   padding: 4px 9px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: #fff;
   font-size: 0.72rem;
   font-weight: 800;
+  will-change: opacity, transform;
+  transition:
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.drag-pill {
+.drag-pill,
+.drag-badge {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  top: 8px;
+  right: 8px;
+  left: auto;
+  z-index: 2;
   min-height: 28px;
   padding: 4px 10px;
+  max-width: calc(100% - 52px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: #fff;
   font-size: clamp(0.64rem, 0.62rem + 0.14vw, 0.72rem);
   font-weight: 700;
+  opacity: 0;
+  transform: translateY(-4px);
+  will-change: opacity, transform;
+  transition:
+    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.movie-card:hover .drag-pill,
+.movie-card:hover .drag-badge,
+.movie-card:focus-within .drag-pill,
+.movie-card:focus-within .drag-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.movie-card:hover .order-badge,
+.movie-card:focus-within .order-badge {
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+  transform: scale(1.05);
+}
+
+.movie-card.dragging .drag-pill,
+.movie-card.dragging .drag-badge,
+.movie-card.dragging .order-badge,
+body.is-dragging .movie-card.dragging .drag-pill,
+body.is-dragging .movie-card.dragging .drag-badge,
+body.is-dragging .movie-card.dragging .order-badge {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.96);
+}
+
+@media (hover: none) {
+  .movie-card .drag-pill,
+  .movie-card .drag-badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drag-pill,
+  .drag-badge,
+  .order-badge {
+    transition: none;
+  }
 }
 
 .card-content {
