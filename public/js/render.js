@@ -5,6 +5,8 @@ import {
   state,
 } from "./state.js";
 import { hasPendingRequests } from "./api.js";
+import { applyMasterCardLayout } from "./masterView.js";
+import { setupSectionScrollUX, syncSectionScrollUX } from "./scroll.js";
 
 const movieCardTemplate = document.getElementById("movieCardTemplate");
 
@@ -114,8 +116,8 @@ function renderHomeShell() {
           <h2>Master List</h2>
           <span id="masterCount" class="count-badge">0</span>
         </div>
-        <div class="movie-container">
-          <div id="masterGrid" class="movies-grid master-grid" data-section="master"></div>
+        <div class="movie-container master-container">
+          <div id="masterGrid" class="movies-grid master-grid master-list" data-section="master"></div>
         </div>
       </section>
 
@@ -124,8 +126,21 @@ function renderHomeShell() {
           <h2>Unwatched Movies</h2>
           <span id="unwatchedCount" class="count-badge">0</span>
         </div>
-        <div class="movie-container">
-          <div id="unwatchedGrid" class="movies-grid movie-grid" data-section="unwatched"></div>
+        <div class="section-wrapper">
+          <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
+            &#10094;
+          </button>
+          <div class="movie-container">
+            <div
+              id="unwatchedGrid"
+              class="movies-grid movie-grid horizontal-scroll-grid"
+              data-section="unwatched"
+            ></div>
+          </div>
+          <button class="scroll-arrow scroll-right" type="button" aria-label="Scroll right">
+            &#10095;
+          </button>
+          <div class="scroll-indicator"><div class="scroll-progress"></div></div>
         </div>
       </section>
 
@@ -134,8 +149,21 @@ function renderHomeShell() {
           <h2>Watched Movies</h2>
           <span id="watchedCount" class="count-badge">0</span>
         </div>
-        <div class="movie-container">
-          <div id="watchedGrid" class="movies-grid movie-grid" data-section="watched"></div>
+        <div class="section-wrapper">
+          <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
+            &#10094;
+          </button>
+          <div class="movie-container">
+            <div
+              id="watchedGrid"
+              class="movies-grid movie-grid horizontal-scroll-grid"
+              data-section="watched"
+            ></div>
+          </div>
+          <button class="scroll-arrow scroll-right" type="button" aria-label="Scroll right">
+            &#10095;
+          </button>
+          <div class="scroll-indicator"><div class="scroll-progress"></div></div>
         </div>
       </section>
 
@@ -321,6 +349,7 @@ function createMovieCard(movie, { addedId = null, movingInId = null, masterMode 
   card.draggable = true;
   card.classList.toggle("seen", movie.seen);
   card.classList.toggle("master-card", masterMode);
+  card.classList.toggle("master-item", masterMode);
 
   if (addedId === movie._id) {
     card.classList.add("adding");
@@ -357,6 +386,10 @@ function createMovieCard(movie, { addedId = null, movingInId = null, masterMode 
   if (watchedPill) {
     watchedPill.textContent = movie.seen ? "Watched" : "Unwatched";
     watchedPill.classList.toggle("show", movie.seen);
+  }
+
+  if (masterMode) {
+    applyMasterCardLayout(card, movie);
   }
 
   const toggle = card.querySelector(".seen-toggle");
@@ -492,7 +525,11 @@ export function renderSections(options = {}) {
   }
 
   applyStatusMessage(filtered.length, visible.length);
+  setupSectionScrollUX(elements.homeView || elements.viewContainer);
   applyBusyState();
+  if (!isBusy()) {
+    syncSectionScrollUX(elements.homeView || elements.viewContainer);
+  }
 
   if (keepScroll) {
     window.scrollTo({

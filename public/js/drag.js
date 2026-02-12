@@ -88,11 +88,7 @@ function findInsertionIndexForSection(sortedMovies, section) {
 }
 
 function isHorizontalDropMode(container) {
-  return (
-    window.matchMedia("(max-width: 768px)").matches &&
-    container &&
-    !container.classList.contains("master-grid")
-  );
+  return container?.classList?.contains("horizontal-scroll-grid");
 }
 
 function showDropIndicator(container, index) {

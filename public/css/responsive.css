@@ -1,8 +1,7 @@
-/* Responsive breakpoints:
-   Mobile horizontal system: <= 768px
-   Desktop/grid system: >= 769px */
+/* Responsive structure:
+   <=768px: compact mobile layout, arrows hidden
+   >=769px: desktop/tablet with horizontal-row arrows */
 
-/* Mobile: section header stays full-width, movie rows become horizontal scrollers. */
 @media (max-width: 768px) {
   .header-inner {
     padding: 10px 12px;
@@ -38,65 +37,35 @@
     padding: 12px;
   }
 
-  .movie-container .movies-grid:not(.master-grid) {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 16px;
-    padding-bottom: 10px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+  .horizontal-scroll-grid {
+    gap: 14px;
+    padding-right: 24px;
   }
 
-  .movie-container .movies-grid:not(.master-grid)::-webkit-scrollbar {
-    display: none;
-  }
-
-  .movie-container .movies-grid:not(.master-grid) {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .movie-container .movies-grid:not(.master-grid) .movie-card {
-    flex: 0 0 auto;
+  .horizontal-scroll-grid .movie-card {
     width: clamp(160px, 60vw, 220px);
-    scroll-snap-align: start;
   }
 
-  .movie-container .movies-grid:not(.master-grid) .poster {
-    aspect-ratio: 2 / 3;
-    object-fit: cover;
-  }
-
-  .movie-container .movies-grid:not(.master-grid) .card-content {
+  .horizontal-scroll-grid .card-content {
     padding: 10px;
     gap: 9px;
   }
 
-  .movie-container .movies-grid:not(.master-grid) .movie-title {
+  .horizontal-scroll-grid .movie-title {
     font-size: clamp(0.84rem, 1vw, 0.96rem);
   }
 
-  .movie-container .movies-grid:not(.master-grid) .toggle-label,
-  .movie-container .movies-grid:not(.master-grid) .movie-year,
-  .movie-container .movies-grid:not(.master-grid) .status-chip {
+  .horizontal-scroll-grid .toggle-label,
+  .horizontal-scroll-grid .movie-year,
+  .horizontal-scroll-grid .status-chip {
     font-size: clamp(0.68rem, 0.8vw, 0.75rem);
   }
 
-  /* Keep master-list cards compact on smaller widths. */
-  .movie-card.master-card {
-    grid-template-columns: 1fr;
-  }
-
-  .movie-card.master-card .poster {
-    min-height: 0;
-    aspect-ratio: 2 / 3;
-    max-height: 380px;
+  .scroll-arrow {
+    display: none;
   }
 }
 
-/* Desktop/tablet+: restore grid behavior for movie sections. */
 @media (min-width: 769px) {
   .header-inner {
     display: grid;
@@ -125,19 +94,6 @@
     flex-wrap: wrap;
   }
 
-  .movie-container .movies-grid:not(.master-grid) {
-    display: grid;
-    overflow: visible;
-    scroll-snap-type: none;
-    -webkit-overflow-scrolling: auto;
-    padding-bottom: 0;
-  }
-
-  .movie-container .movies-grid:not(.master-grid) .movie-card {
-    width: auto;
-    flex: initial;
-  }
-
   .add-modal {
     padding: 22px;
     border-radius: 20px;
@@ -158,6 +114,10 @@
   .section {
     border-radius: 22px;
     padding: 20px;
+  }
+
+  .horizontal-scroll-grid .movie-card {
+    width: clamp(220px, 17vw, 290px);
   }
 
   .add-modal {
