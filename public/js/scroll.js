@@ -3,7 +3,9 @@ let hasResizeListener = false;
 
 function getWrapperParts(wrapper) {
   const grid = wrapper.querySelector(".horizontal-scroll-grid");
-  const wrapperScroll = wrapper.querySelector(".movies-scroll-wrapper");
+  const wrapperScroll =
+    wrapper.querySelector(".movie-scroll-container") ||
+    wrapper.querySelector(".movies-scroll-wrapper");
   return {
     grid,
     scrollContainer: wrapperScroll || grid,

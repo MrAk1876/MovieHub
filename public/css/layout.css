@@ -129,14 +129,13 @@
 
 /* Section View rails: always horizontal */
 .movie-grid.horizontal-scroll-grid {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: flex-start;
   gap: 20px;
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
   padding: 20px;
   overflow: visible;
   scroll-snap-type: x mandatory;
@@ -145,10 +144,11 @@
 }
 
 .movie-grid.horizontal-scroll-grid .movie-card {
-  flex: 0 0 300px;
+  flex: 0 0 48%;
   flex-shrink: 0;
   scroll-snap-align: start;
   align-self: stretch;
+  min-width: 0;
 }
 
 /* Master View: always vertical list */
@@ -169,13 +169,18 @@
 
 .movies-scroll-wrapper {
   width: 100%;
+  overflow: visible;
+}
+
+.movie-scroll-container {
+  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
 
-.movies-scroll-wrapper::-webkit-scrollbar {
+.movie-scroll-container::-webkit-scrollbar {
   display: none;
 }
 

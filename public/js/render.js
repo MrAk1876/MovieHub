@@ -134,7 +134,7 @@ function renderHomeShell() {
             <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
               &#10094;
             </button>
-            <div class="movies-scroll-wrapper">
+            <div class="movies-scroll-wrapper movie-scroll-container">
               <div class="movie-container">
                 <div
                   id="unwatchedGrid"
@@ -161,7 +161,7 @@ function renderHomeShell() {
             <button class="scroll-arrow scroll-left" type="button" aria-label="Scroll left">
               &#10094;
             </button>
-            <div class="movies-scroll-wrapper">
+            <div class="movies-scroll-wrapper movie-scroll-container">
               <div class="movie-container">
                 <div
                   id="watchedGrid"
@@ -376,6 +376,19 @@ function createMovieCard(movie, { addedId = null, movingInId = null, masterMode 
   const orderBadge = card.querySelector(".order-badge");
   if (orderBadge) {
     orderBadge.textContent = `#${movie.order}`;
+  }
+
+  const dragBadge = card.querySelector(".drag-badge");
+  if (dragBadge) {
+    if (masterMode) {
+      dragBadge.textContent = "";
+      dragBadge.classList.add("icon-only");
+      dragBadge.setAttribute("aria-label", "Drag movie");
+      dragBadge.title = "Drag movie";
+    } else {
+      dragBadge.textContent = "Drag";
+      dragBadge.classList.remove("icon-only");
+    }
   }
 
   const orderHero = card.querySelector(".order-hero");

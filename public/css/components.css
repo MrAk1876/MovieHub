@@ -33,12 +33,33 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  position: relative;
+  isolation: isolate;
   background: var(--surface-muted);
   border: 1px solid var(--border-color);
   border-radius: 999px;
   padding: 4px;
   min-width: 0;
   max-width: 100%;
+  overflow: hidden;
+}
+
+.mode-switch::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 8px 18px var(--accent-soft);
+  z-index: 0;
+  transition: transform 0.25s ease;
+}
+
+.mode-switch:has(.mode-btn[data-mode="master"].active)::before {
+  transform: translateX(100%);
 }
 
 .mode-btn,
@@ -59,11 +80,27 @@
   color: var(--text-primary);
 }
 
-.mode-btn.active,
+.mode-btn.active {
+  color: var(--text-inverse);
+}
+
 .chip.active {
   background: var(--accent);
   color: var(--text-inverse);
   box-shadow: 0 8px 18px var(--accent-soft);
+}
+
+.mode-btn {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+}
+
+.mode-switch .mode-btn {
+  background: transparent;
+  box-shadow: none;
 }
 
 .count-badge {
@@ -175,7 +212,7 @@
   justify-content: space-between;
   border-radius: 16px;
   padding: 16px;
-  height: 100%;
+  height: auto;
 }
 
 .movie-grid .poster-wrapper {
@@ -195,6 +232,8 @@
   gap: 10px;
   margin-top: 12px;
   flex: 1;
+  min-width: 0;
+  width: 100%;
 }
 
 .movie-grid .movie-meta,
@@ -209,6 +248,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .movie-grid .watch-btn {
@@ -222,6 +263,8 @@
 .movie-grid .secondary-actions {
   display: flex;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
 }
 
 .movie-grid .action-row button,
@@ -516,9 +559,53 @@
   display: none;
 }
 
+.master-item .drag-pill,
+.master-item .drag-badge,
+.master-card .drag-pill,
+.master-card .drag-badge {
+  top: 6px;
+  left: 6px;
+  right: auto;
+  width: 22px;
+  height: 22px;
+  min-height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  opacity: 0.55;
+  transform: none;
+  background: rgba(15, 23, 42, 0.48);
+  pointer-events: none;
+}
+
+.master-item .drag-badge.icon-only::before,
+.master-card .drag-badge.icon-only::before {
+  content: "⋮⋮";
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
 .master-item .movie-title,
 .master-card .movie-title {
   font-size: clamp(1rem, 1.8vw, 1.35rem);
+}
+
+.master-item .card-meta-row,
+.master-card .card-meta-row,
+.master-item .movie-meta,
+.master-card .movie-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.master-item .movie-year,
+.master-card .movie-year,
+.master-item .status-chip,
+.master-card .status-chip {
+  white-space: nowrap;
 }
 
 .master-item .watch-btn,
@@ -529,6 +616,28 @@
 .master-card .delete-btn {
   min-height: 36px;
   height: 36px;
+}
+
+.master-item .edit-btn,
+.master-card .edit-btn,
+.master-item .delete-btn,
+.master-card .delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.master-item .edit-btn::before,
+.master-card .edit-btn::before {
+  content: "\270E";
+  font-size: 14px;
+}
+
+.master-item .delete-btn::before,
+.master-card .delete-btn::before {
+  content: "\1F5D1";
+  font-size: 14px;
 }
 
 .master-item .secondary-actions,
