@@ -91,11 +91,15 @@ function findInsertionIndexForSection(sortedMovies, section) {
 
 function isHorizontalDropMode(container) {
   if (!container) return false;
+  if (container.classList.contains("horizontal-scroll-grid")) return true;
 
   const styles = window.getComputedStyle(container);
   const isFlexRow = styles.display.includes("flex") && styles.flexDirection.startsWith("row");
-  const hasHorizontalOverflow = container.scrollWidth - container.clientWidth > 2;
-  return isFlexRow && hasHorizontalOverflow;
+  const scrollHost = container.closest(".movie-scroll-container");
+  const hostIsScrollable = scrollHost
+    ? scrollHost.scrollWidth - scrollHost.clientWidth > 2
+    : container.scrollWidth - container.clientWidth > 2;
+  return isFlexRow && hostIsScrollable;
 }
 
 function isGridDropMode(container) {

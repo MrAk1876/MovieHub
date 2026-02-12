@@ -1,4 +1,15 @@
+@media (max-width: 1200px) {
+  .view-container {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 @media (max-width: 1023px) {
+  :root {
+    --section-card-width-tablet: 204px;
+  }
+
   .header-inner {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -12,19 +23,16 @@
     justify-content: space-between;
   }
 
-  .home-toolbar {
+  .home-toolbar,
+  .controls-row {
     align-items: stretch;
   }
 
-  .view-container {
-    width: 100%;
-    max-width: none;
-    padding-inline: clamp(12px, 2vw, 20px);
-  }
-
-  /* Tablet: keep two cards in section rails */
   .movie-grid.horizontal-scroll-grid .movie-card {
-    flex: 0 0 45%;
+    flex: 0 0 var(--section-card-width-tablet);
+    width: var(--section-card-width-tablet);
+    min-width: var(--section-card-width-tablet);
+    max-width: var(--section-card-width-tablet);
   }
 }
 
@@ -40,38 +48,34 @@
   .header-actions {
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 8px;
   }
 
-  .open-add-btn,
-  #openAddViewBtn {
-    min-height: 40px;
+  #openAddViewBtn,
+  .open-add-btn {
+    min-height: 38px;
+    padding-inline: 12px;
   }
 
   .home-toolbar,
   .controls-row {
     flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    width: 100%;
+    gap: 10px;
   }
 
   .chips-wrap,
   .filters-group {
-    justify-content: center;
     width: 100%;
+    justify-content: center;
   }
 
   .mode-switch,
   .view-toggle-group {
-    justify-content: center;
     width: min(100%, 400px);
     margin-inline: auto;
   }
 
   .mode-switch .mode-btn,
   .view-toggle-group button {
-    flex: 1;
     min-height: 40px;
     height: 40px;
     font-size: 14px;
@@ -83,127 +87,80 @@
   }
 
   .section {
-    padding: 14px;
+    padding: 10px;
   }
 
-  /* Section View: single-card mobile rail */
+  .movie-scroll-container {
+    scroll-padding-left: 10px;
+  }
+
+  .movie-scroll-container > .movie-container,
+  .movie-scroll-container > .movie-container > .movie-grid.horizontal-scroll-grid {
+    width: max-content;
+    min-width: 100%;
+  }
+
   .movie-grid.horizontal-scroll-grid {
-    gap: 16px;
-    padding: 16px;
-    scroll-padding-left: 16px;
+    gap: 10px;
+    padding: 4px 10px 8px;
+    width: max-content;
+    min-width: 100%;
   }
 
   .movie-grid.horizontal-scroll-grid .movie-card {
-    flex: 0 0 85%;
-    width: 85%;
-    min-width: 85%;
-    max-width: 85%;
+    flex: 0 0 clamp(176px, 70vw, 206px);
+    width: clamp(176px, 70vw, 206px);
+    min-width: clamp(176px, 70vw, 206px);
+    max-width: clamp(176px, 70vw, 206px);
   }
 
-  /* Section View buttons: icon mode */
+  .movie-grid.horizontal-scroll-grid .movie-card {
+    padding: 10px;
+  }
+
   .movie-grid.horizontal-scroll-grid .watch-btn {
-    width: 100%;
-    min-height: 38px;
-    height: 38px;
-  }
-
-  .movie-grid.horizontal-scroll-grid .button-group,
-  .movie-grid.horizontal-scroll-grid .secondary-actions,
-  .movie-grid.horizontal-scroll-grid .edit-delete-row,
-  .movie-grid.horizontal-scroll-grid .action-row {
-    justify-content: center;
+    min-height: 34px;
+    height: 34px;
   }
 
   .movie-grid.horizontal-scroll-grid .secondary-actions button,
   .movie-grid.horizontal-scroll-grid .edit-delete-row button,
   .movie-grid.horizontal-scroll-grid .edit-btn,
   .movie-grid.horizontal-scroll-grid .delete-btn {
-    flex: 0 0 auto;
-    width: 42px;
-    height: 42px;
-    min-height: 42px;
-    padding: 0;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    border-radius: 999px;
     font-size: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .movie-grid.horizontal-scroll-grid .watch-btn {
-    font-size: var(--button-text-size);
-    width: 100%;
-    height: 38px;
-    min-height: 38px;
-    padding: 0 12px;
+    padding: 0;
+    flex: 0 0 34px;
   }
 
   .movie-grid.horizontal-scroll-grid .edit-btn::before {
     content: "\270E";
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .movie-grid.horizontal-scroll-grid .delete-btn::before {
     content: "\2715";
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .movie-grid.horizontal-scroll-grid .watch-btn::before {
     content: none;
   }
 
-  /* Master list: compact controls on mobile */
-  .master-item .toggle-switch,
-  .master-card .toggle-switch {
-    transform: scale(0.8);
+  .toggle-switch {
+    transform: scale(0.9);
     transform-origin: right center;
-  }
-
-  .master-item .secondary-actions,
-  .master-card .secondary-actions,
-  .master-item .edit-delete-row,
-  .master-card .edit-delete-row {
-    width: auto;
-    flex-wrap: nowrap;
-  }
-
-  .master-item .edit-btn,
-  .master-card .edit-btn,
-  .master-item .delete-btn,
-  .master-card .delete-btn {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    min-height: 36px;
-    padding: 0;
-    border-radius: 50%;
-    font-size: 0;
-    flex: 0 0 36px;
-  }
-
-  .master-item .edit-btn::before,
-  .master-card .edit-btn::before,
-  .master-item .delete-btn::before,
-  .master-card .delete-btn::before {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 420px) {
-  .mode-btn,
-  .chip {
-    padding-inline: 10px;
-  }
-
-  .search-input,
-  .add-modal input {
-    min-height: 40px;
   }
 
   .master-item,
   .master-card {
-    grid-template-columns: 34px 68px minmax(0, 1fr);
-    gap: 10px;
-    padding: 12px;
+    grid-template-columns: 30px 68px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
   }
 
   .master-item .card-media,
@@ -214,29 +171,76 @@
     max-width: 68px;
   }
 
-  .master-item .movie-title,
-  .master-card .movie-title {
-    font-size: 1rem;
-    line-height: 1.2;
+  .master-item .movie-card-content,
+  .master-card .movie-card-content {
+    gap: 6px;
+  }
+
+  .master-item .toggle-switch,
+  .master-card .toggle-switch {
+    transform: scale(0.8);
+    transform-origin: right center;
   }
 
   .master-item .watch-btn,
-  .master-card .watch-btn,
+  .master-card .watch-btn {
+    min-height: 30px;
+    height: 30px;
+  }
+
   .master-item .edit-btn,
   .master-card .edit-btn,
   .master-item .delete-btn,
   .master-card .delete-btn {
-    min-height: 32px;
+    width: 32px;
+    min-width: 32px;
     height: 32px;
-    padding-inline: 8px;
-    font-size: 0.76rem;
+    min-height: 32px;
+    padding: 0;
+    border-radius: 999px;
+    font-size: 0;
+    flex: 0 0 32px;
   }
 
-  .master-item .secondary-actions,
-  .master-card .secondary-actions,
-  .master-item .edit-delete-row,
-  .master-card .edit-delete-row {
-    display: flex;
-    gap: 6px;
+  .master-item .edit-btn::before,
+  .master-card .edit-btn::before,
+  .master-item .delete-btn::before,
+  .master-card .delete-btn::before {
+    font-size: 13px;
+  }
+
+  .scroll-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .mode-btn,
+  .chip {
+    padding-inline: 9px;
+  }
+
+  .search-input,
+  .add-modal input {
+    min-height: 38px;
+  }
+
+  .master-item,
+  .master-card {
+    grid-template-columns: 26px 62px minmax(0, 1fr);
+  }
+
+  .master-item .card-media,
+  .master-card .card-media,
+  .master-item .poster-wrapper,
+  .master-card .poster-wrapper {
+    width: 62px;
+    max-width: 62px;
+  }
+
+  .movie-grid.horizontal-scroll-grid .movie-card {
+    max-width: 198px;
+    min-width: clamp(164px, 72vw, 198px);
+    width: clamp(164px, 72vw, 198px);
   }
 }

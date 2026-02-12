@@ -16,24 +16,58 @@
   }
 }
 
+@keyframes rail-card-in {
+  from {
+    opacity: 0;
+    transform: translateX(26px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 .movie-card {
-  animation: card-enter 0.26s ease both;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease,
-    background-color 0.3s ease;
+  animation: card-enter 0.24s ease both;
+  transition:
+    transform 0.24s ease,
+    box-shadow 0.24s ease,
+    opacity 0.24s ease,
+    background-color 0.24s ease;
+}
+
+.movie-grid.horizontal-scroll-grid .movie-card {
+  opacity: 0;
+  animation: rail-card-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--stagger-delay, 0ms);
+  will-change: transform, opacity;
 }
 
 .movie-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.movie-grid.updating,
-.movies-grid.updating {
+.movie-grid.horizontal-scroll-grid .movie-card:hover .poster {
+  transform: scale(1.05);
+}
+
+.movie-grid.horizontal-scroll-grid .poster {
+  transition: transform 0.42s ease;
+}
+
+.movie-grid.horizontal-scroll-grid {
+  scroll-behavior: smooth;
+}
+
+.movies-grid.updating,
+.movie-grid.updating {
   opacity: 0.75;
 }
 
 .card.moving-out {
-  transform: scale(0.7);
+  transform: scale(0.78);
   opacity: 0;
 }
 
@@ -49,12 +83,12 @@
 
 .order-number,
 .order-badge {
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform 0.24s ease, color 0.24s ease;
 }
 
 .order-number.number-updating,
 .order-badge.number-updating {
-  transform: scale(1.1);
+  transform: scale(1.08);
   color: var(--accent);
 }
 
@@ -75,8 +109,8 @@
 }
 
 .movie-card.dragging {
-  opacity: 0.7;
-  transform: rotate(2deg) scale(1.03);
+  opacity: 0.75;
+  transform: rotate(2deg) scale(1.02);
   box-shadow: 0 0 0 2px var(--accent), var(--shadow-md);
   z-index: 5;
 }
@@ -104,7 +138,8 @@ body.is-dragging .movie-card.dragging .order-badge {
   z-index: 120;
   border-radius: 999px;
   background: var(--accent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--surface-card) 85%, transparent),
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--surface-card) 85%, transparent),
     0 0 10px var(--accent-soft);
   pointer-events: none;
   opacity: 0;
@@ -133,6 +168,7 @@ body.dragging .seen-toggle {
 
   .movie-card:hover {
     transform: none;
+    box-shadow: var(--shadow-sm);
   }
 
   .order-number.number-updating,

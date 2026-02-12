@@ -447,8 +447,11 @@ export function renderMovies(grid, movies, options = {}) {
   grid.classList.add("updating");
 
   const fragment = document.createDocumentFragment();
-  movies.forEach((movie) => {
-    fragment.appendChild(createMovieCard(movie, options));
+  movies.forEach((movie, index) => {
+    const card = createMovieCard(movie, options);
+    // Stagger card entrance for a Netflix-like row reveal effect.
+    card.style.setProperty("--stagger-delay", `${Math.min(index, 10) * 55}ms`);
+    fragment.appendChild(card);
   });
 
   grid.innerHTML = "";
