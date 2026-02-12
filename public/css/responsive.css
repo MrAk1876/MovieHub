@@ -126,28 +126,45 @@
 
   .horizontal-scroll-grid .card-actions {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 38px 38px;
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     align-items: center;
+    min-width: 0;
   }
 
   .horizontal-scroll-grid .watch-btn {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
     min-height: 38px;
     padding: 7px 10px;
     font-size: 0.78rem;
   }
 
+  .horizontal-scroll-grid .secondary-actions {
+    display: inline-flex;
+    gap: 8px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .horizontal-scroll-grid .secondary-actions .edit-btn,
+  .horizontal-scroll-grid .secondary-actions .delete-btn,
   .horizontal-scroll-grid .edit-btn,
   .horizontal-scroll-grid .delete-btn {
+    flex: 0 0 38px;
     width: 38px;
     min-height: 38px;
     height: 38px;
+    max-width: 38px;
     padding: 0;
     font-size: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .horizontal-scroll-grid .edit-btn::before {
@@ -208,25 +225,42 @@
 
   .master-item .card-actions {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 36px 36px;
+    display: flex;
+    flex-wrap: wrap;
     gap: 6px;
-  }
-
-  .master-item .card-actions .btn {
-    min-height: 36px;
-    height: 36px;
-    padding: 0;
+    min-width: 0;
   }
 
   .master-item .watch-btn {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+    min-height: 36px;
+    height: 36px;
     padding: 7px 8px;
     font-size: 0.76rem;
   }
 
+  .master-item .secondary-actions {
+    display: inline-flex;
+    gap: 6px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .master-item .secondary-actions .edit-btn,
+  .master-item .secondary-actions .delete-btn,
   .master-item .edit-btn,
   .master-item .delete-btn {
+    flex: 0 0 36px;
+    width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    height: 36px;
+    padding: 0;
     font-size: 0;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .master-item .edit-btn::before {
@@ -274,25 +308,34 @@
     font-size: 0.62rem;
   }
 
-  .master-item .drag-pill,
-  .master-item .drag-badge {
+  .movie-card .drag-pill,
+  .movie-card .drag-badge {
     top: 6px;
     right: 6px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    min-height: 22px;
+    width: 24px;
+    height: 24px;
+    min-height: 24px;
+    max-width: 24px;
     padding: 0;
     font-size: 0;
     line-height: 1;
+    border-radius: 999px;
   }
 
-  .master-item .drag-pill::before,
-  .master-item .drag-badge::before {
+  .movie-card .drag-pill::before,
+  .movie-card .drag-badge::before {
     content: "\2195";
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 800;
+  }
+
+  .movie-card:hover .order-badge,
+  .movie-card:focus-within .order-badge {
+    box-shadow: none;
+    transform: none;
   }
 }
 

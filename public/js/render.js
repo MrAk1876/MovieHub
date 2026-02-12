@@ -6,6 +6,7 @@ import {
 } from "./state.js";
 import { hasPendingRequests } from "./api.js";
 import { applyMasterCardLayout } from "./masterView.js";
+import { animateCount, animateOrderNumberChanges } from "./interactions.js";
 import { setupSectionScrollUX, syncSectionScrollUX } from "./scroll.js";
 
 const movieCardTemplate = document.getElementById("movieCardTemplate");
@@ -503,7 +504,7 @@ export function renderSections(options = {}) {
       masterMode: true,
     });
     if (elements.masterCount) {
-      elements.masterCount.textContent = String(visible.length);
+      animateCount(elements.masterCount, visible.length);
     }
   } else {
     const unwatched = visible.filter((movie) => !movie.seen);
@@ -513,12 +514,15 @@ export function renderSections(options = {}) {
     renderMovies(elements.watchedGrid, watched, { addedId, movingInId });
 
     if (elements.unwatchedCount) {
-      elements.unwatchedCount.textContent = String(unwatched.length);
+      animateCount(elements.unwatchedCount, unwatched.length);
     }
     if (elements.watchedCount) {
-      elements.watchedCount.textContent = String(watched.length);
+      animateCount(elements.watchedCount, watched.length);
     }
   }
+
+  // Animate order labels only when values actually change across renders.
+  animateOrderNumberChanges(elements.homeView || elements.viewContainer);
 
   if (elements.scrollSentinel) {
     elements.scrollSentinel.classList.toggle("hidden", visible.length >= filtered.length);

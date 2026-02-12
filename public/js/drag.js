@@ -1,4 +1,5 @@
 import { hasPendingRequests, reorderMoviesApi } from "./api.js";
+import { triggerHapticFeedback } from "./interactions.js";
 import {
   replaceMovies,
   setDragging,
@@ -238,6 +239,7 @@ function startDragFromCard(card) {
 
   setDragging(true);
   document.body.classList.add("is-dragging");
+  triggerHapticFeedback(15);
   renderLayout();
 
   // Delay the class to avoid inconsistent browser drag snapshots.
@@ -314,6 +316,8 @@ async function finalizeDrop(context) {
     return;
   }
 
+  triggerHapticFeedback(15);
+
   const previousSnapshot = snapshotMovies();
   const computed = buildNextMovieState({
     movieList: previousSnapshot,
@@ -351,6 +355,7 @@ async function finalizeDrop(context) {
       replaceMovies(payload.movies);
       renderWithFlip(syncBefore, { movingInId: movedId });
     }
+    triggerHapticFeedback([20, 30, 20]);
   } catch (error) {
     console.error("Global reorder sync failed:", error);
     const rollbackBefore = captureCardPositions();

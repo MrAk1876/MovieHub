@@ -8,6 +8,7 @@ import {
 } from "./api.js";
 import { setupDragAndDrop } from "./drag.js";
 import { setupFilters } from "./filters.js";
+import { setupInteractions } from "./interactions.js";
 import {
   elements,
   fillAddFormFields,
@@ -411,6 +412,7 @@ function init() {
   initApiListener();
   setupTheme();
   setupFilters();
+  setupInteractions(document);
   setupInfiniteScroll();
   setupDragAndDrop();
   bindEvents();

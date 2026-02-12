@@ -65,7 +65,7 @@
           <img class="poster" alt="Movie poster" loading="lazy" />
           <span class="order-badge">#1</span>
           <span class="watched-pill">Watched</span>
-          <span class="drag-pill" title="Drag to reorder/move">Drag</span>
+          <span class="drag-pill drag-badge" title="Drag to reorder/move">Drag</span>
         </div>
 
         <div class="card-content">
@@ -87,10 +87,12 @@
             </label>
           </div>
 
-          <div class="card-actions">
+          <div class="card-actions action-row">
             <button class="watch-btn btn btn-info" type="button">Watch</button>
-            <button class="edit-btn btn btn-secondary" type="button">Edit</button>
-            <button class="delete-btn btn btn-danger" type="button">Delete</button>
+            <div class="secondary-actions">
+              <button class="edit-btn btn btn-secondary" type="button">Edit</button>
+              <button class="delete-btn btn btn-danger" type="button">Delete</button>
+            </div>
           </div>
         </div>
       </article>
