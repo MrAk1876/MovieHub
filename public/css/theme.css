@@ -24,6 +24,35 @@
   --seen-card-bg: linear-gradient(135deg, #d1fae5, #86efac);
 }
 
+/* System-theme fallback when no explicit light/dark class is set yet. */
+@media (prefers-color-scheme: dark) {
+  body:not(.light):not(.dark) {
+    --bg-primary: #111111;
+    --bg-page-gradient: linear-gradient(180deg, #0f172a 0%, #111827 58%, #0b1220 100%);
+    --bg-glow-primary: radial-gradient(circle at 16% 12%, rgba(59, 130, 246, 0.28), transparent 46%);
+    --bg-glow-secondary: radial-gradient(circle at 84% 78%, rgba(16, 185, 129, 0.16), transparent 54%);
+    --bg-surface: #171717;
+    --bg-surface-soft: #1f1f1f;
+    --bg-card: #1e1e1e;
+    --bg-nav: rgba(15, 23, 42, 0.78);
+    --bg-input: #18181b;
+    --bg-chip: #2a2a2a;
+    --bg-chip-active: #3b82f6;
+    --text-primary: #f4f4f4;
+    --text-secondary: #a3a3a3;
+    --text-inverse: #ffffff;
+    --border-color: #2f3748;
+    --shadow-lg: 0 22px 44px rgba(0, 0, 0, 0.45);
+    --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.32);
+    --accent: #3b82f6;
+    --accent-soft: rgba(59, 130, 246, 0.25);
+    --success: #10b981;
+    --danger: #ef4444;
+    --warn: #60a5fa;
+    --seen-card-bg: linear-gradient(135deg, #1f3d2b, #14532d);
+  }
+}
+
 body.dark {
   --bg-primary: #111111;
   --bg-page-gradient: linear-gradient(180deg, #0f172a 0%, #111827 58%, #0b1220 100%);
@@ -59,7 +88,7 @@ body {
   overflow-x: hidden;
   background: var(--bg-page-gradient);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body::before,
@@ -78,4 +107,3 @@ body::before {
 body::after {
   background: var(--bg-glow-secondary);
 }
-

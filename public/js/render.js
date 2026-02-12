@@ -114,7 +114,9 @@ function renderHomeShell() {
           <h2>Master List</h2>
           <span id="masterCount" class="count-badge">0</span>
         </div>
-        <div id="masterGrid" class="movies-grid master-grid" data-section="master"></div>
+        <div class="movie-container">
+          <div id="masterGrid" class="movies-grid master-grid" data-section="master"></div>
+        </div>
       </section>
 
       <section id="unwatchedSection" class="section movie-section" data-section="unwatched">
@@ -122,7 +124,9 @@ function renderHomeShell() {
           <h2>Unwatched Movies</h2>
           <span id="unwatchedCount" class="count-badge">0</span>
         </div>
-        <div id="unwatchedGrid" class="movies-grid movie-grid" data-section="unwatched"></div>
+        <div class="movie-container">
+          <div id="unwatchedGrid" class="movies-grid movie-grid" data-section="unwatched"></div>
+        </div>
       </section>
 
       <section id="watchedSection" class="section movie-section" data-section="watched">
@@ -130,7 +134,9 @@ function renderHomeShell() {
           <h2>Watched Movies</h2>
           <span id="watchedCount" class="count-badge">0</span>
         </div>
-        <div id="watchedGrid" class="movies-grid movie-grid" data-section="watched"></div>
+        <div class="movie-container">
+          <div id="watchedGrid" class="movies-grid movie-grid" data-section="watched"></div>
+        </div>
       </section>
 
       <div id="scrollSentinel" class="scroll-sentinel" aria-hidden="true"></div>
@@ -575,4 +581,3 @@ export function fillAddFormFields(movie) {
   elements.addOrder.value = String(movie.order);
   setAddFormMode("edit");
 }
-

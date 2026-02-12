@@ -7,9 +7,11 @@
 
     <link rel="stylesheet" href="/css/theme.css" />
     <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/typography.css" />
     <link rel="stylesheet" href="/css/layout.css" />
     <link rel="stylesheet" href="/css/components.css" />
     <link rel="stylesheet" href="/css/animations.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
   </head>
   <body class="app-body">
     <script>
@@ -17,11 +19,12 @@
       (function applyInitialTheme() {
         try {
           const saved = localStorage.getItem("mmh-theme");
-          const theme = saved === "light" || saved === "dark" ? saved : "dark";
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = saved === "light" || saved === "dark" ? saved : prefersDark ? "dark" : "light";
           document.body.classList.remove("light", "dark");
           document.body.classList.add(theme);
         } catch (error) {
-          document.body.classList.add("dark");
+          document.body.classList.add("light");
         }
       })();
     </script>

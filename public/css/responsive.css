@@ -1,0 +1,117 @@
+/* Responsive breakpoints (mobile-first):
+   Mobile: 0-640px
+   Tablet: 641-1024px
+   Desktop: 1025px+
+   Large: 1440px+ */
+
+/* Mobile compaction: avoid overflow and keep controls easy to tap */
+@media (max-width: 640px) {
+  .header-inner {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .brand-block h1 {
+    letter-spacing: 0;
+  }
+
+  .home-toolbar {
+    gap: 8px;
+  }
+
+  .mode-switch,
+  .chips-wrap {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .mode-btn,
+  .chip {
+    min-height: 36px;
+    padding-inline: 10px;
+  }
+
+  .section {
+    border-radius: 16px;
+    padding: 12px;
+  }
+}
+
+/* Tablet: balanced header row */
+@media (min-width: 641px) {
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto minmax(240px, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+  }
+
+  .brand-block {
+    justify-content: flex-start;
+  }
+
+  .header-actions {
+    justify-content: flex-end;
+  }
+
+  .view-container {
+    padding: 22px 20px 34px;
+  }
+
+  .home-toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .add-modal {
+    padding: 22px;
+    border-radius: 20px;
+  }
+}
+
+/* Keep master cards compact on touch/tablet widths */
+@media (max-width: 1024px) {
+  .movie-card.master-card {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-card.master-card .poster {
+    min-height: 0;
+    aspect-ratio: 2 / 3;
+    max-height: 380px;
+  }
+}
+
+/* Desktop: wider canvas */
+@media (min-width: 1025px) {
+  .header-inner {
+    grid-template-columns: auto minmax(300px, 560px) auto;
+    gap: 22px;
+    padding: 14px 34px;
+  }
+
+  .view-container {
+    padding: 32px 34px 44px;
+  }
+
+  .section {
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  .add-modal {
+    padding: 30px;
+    border-radius: 24px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1440px) {
+  .view-container {
+    max-width: 1600px;
+    padding-inline: 40px;
+  }
+}

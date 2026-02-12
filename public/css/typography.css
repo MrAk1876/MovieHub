@@ -1,0 +1,44 @@
+/* Fluid typography scale powered by clamp().
+   This keeps text legible and proportional from small phones to large desktops. */
+
+:root {
+  --font-size-body: clamp(0.85rem, 1vw, 1rem);
+  --font-size-app-title: clamp(1.8rem, 3vw, 2.8rem);
+  --font-size-section-title: clamp(1.2rem, 2vw, 1.8rem);
+  --font-size-movie-title: clamp(0.9rem, 1.2vw, 1.1rem);
+  --font-size-meta: clamp(0.75rem, 0.9vw, 0.9rem);
+}
+
+body {
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+.brand-block h1 {
+  font-size: var(--font-size-app-title);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.section-header h2 {
+  font-size: var(--font-size-section-title);
+  line-height: 1.2;
+}
+
+.movie-title {
+  font-size: var(--font-size-movie-title);
+  line-height: 1.35;
+}
+
+.movie-year,
+.status-chip,
+.toggle-label,
+.count-badge {
+  font-size: var(--font-size-meta);
+}
+
+.add-modal label span,
+.search-input::placeholder,
+.add-modal input::placeholder {
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+}

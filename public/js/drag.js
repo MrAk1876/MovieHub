@@ -19,6 +19,7 @@ import {
 let draggedMovieId = null;
 let draggedSourceSection = null;
 let currentDropContext = null;
+let touchDragActive = false;
 
 const dropIndicator = document.createElement("div");
 dropIndicator.className = "drop-indicator";
@@ -198,10 +199,8 @@ function renderWithFlip(beforeRects, options = {}) {
   runFlipAnimation(beforeRects);
 }
 
-function handleDragStart(event) {
-  const card = event.target.closest(".movie-card");
-  if (!card || hasPendingRequests() || state.ui.currentView !== "home") return;
-
+function startDragFromCard(card) {
+  if (!card || hasPendingRequests() || state.ui.currentView !== "home") return false;
   draggedMovieId = card.dataset.id;
   draggedSourceSection = card.dataset.section;
   currentDropContext = null;
@@ -213,6 +212,12 @@ function handleDragStart(event) {
   setTimeout(() => {
     card.classList.add("dragging");
   }, 0);
+  return true;
+}
+
+function handleDragStart(event) {
+  const card = event.target.closest(".movie-card");
+  if (!startDragFromCard(card)) return;
 
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = "move";
@@ -265,8 +270,15 @@ async function handleDrop(event) {
   if (!draggedMovieId) return;
 
   const context = getDropContext(event.target, event.clientY) || currentDropContext;
+  await finalizeDrop(context);
+}
+
+async function finalizeDrop(context) {
+  if (!draggedMovieId) return;
+
   if (!context) {
     resetDragState();
+    touchDragActive = false;
     return;
   }
 
@@ -280,6 +292,7 @@ async function handleDrop(event) {
 
   if (!computed) {
     resetDragState();
+    touchDragActive = false;
     return;
   }
 
@@ -313,11 +326,78 @@ async function handleDrop(event) {
     renderWithFlip(rollbackBefore);
     setStatus("Unable to save new order.", true);
     showToast("Unable to save new order", "error");
+  } finally {
+    touchDragActive = false;
   }
 }
 
 function handleDragEnd() {
   resetDragState();
+  touchDragActive = false;
+}
+
+function getDropContextFromPoint(clientX, clientY) {
+  const target = document.elementFromPoint(clientX, clientY);
+  if (!target) return null;
+  return getDropContext(target, clientY);
+}
+
+function handleTouchStart(event) {
+  if (event.touches.length !== 1) return;
+
+  const dragHandle = event.target.closest(".drag-pill");
+  if (!dragHandle) return;
+
+  const card = dragHandle.closest(".movie-card");
+  if (!startDragFromCard(card)) return;
+
+  touchDragActive = true;
+
+  const touch = event.touches[0];
+  const context = getDropContextFromPoint(touch.clientX, touch.clientY);
+  if (context) {
+    currentDropContext = context;
+    highlightSection(context.section);
+    showDropIndicator(context.grid, context.index);
+  }
+
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+}
+
+function handleTouchMove(event) {
+  if (!touchDragActive || !draggedMovieId) return;
+  if (!event.touches.length) return;
+
+  const touch = event.touches[0];
+  const context = getDropContextFromPoint(touch.clientX, touch.clientY);
+  if (context) {
+    currentDropContext = context;
+    highlightSection(context.section);
+    showDropIndicator(context.grid, context.index);
+  }
+
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+}
+
+async function handleTouchEnd(event) {
+  if (!touchDragActive || !draggedMovieId) return;
+
+  const touch = event.changedTouches?.[0];
+  const context = touch
+    ? getDropContextFromPoint(touch.clientX, touch.clientY) || currentDropContext
+    : currentDropContext;
+
+  await finalizeDrop(context);
+}
+
+function handleTouchCancel() {
+  if (!touchDragActive && !draggedMovieId) return;
+  resetDragState();
+  touchDragActive = false;
 }
 
 export function setupDragAndDrop() {
@@ -328,4 +408,8 @@ export function setupDragAndDrop() {
   root.addEventListener("dragleave", handleDragLeave);
   root.addEventListener("drop", handleDrop);
   root.addEventListener("dragend", handleDragEnd);
+  root.addEventListener("touchstart", handleTouchStart, { passive: false });
+  root.addEventListener("touchmove", handleTouchMove, { passive: false });
+  root.addEventListener("touchend", handleTouchEnd);
+  root.addEventListener("touchcancel", handleTouchCancel);
 }
