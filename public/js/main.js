@@ -20,6 +20,7 @@ import {
   showToast,
 } from "./render.js";
 import { navigateTo, setupRouting } from "./router.js";
+import { setSectionLoadMoreHandler } from "./scroll.js";
 import {
   ensureVisibleCountAtLeast,
   getMovieById,
@@ -41,10 +42,13 @@ import {
 import { setupTheme } from "./theme.js";
 
 const TOGGLE_ANIMATION_MS = 300;
+const HORIZONTAL_LOAD_COOLDOWN_MS = 220;
 
 let editingMovieId = null;
 let infiniteObserver = null;
 let pendingHomeRenderOptions = null;
+let horizontalLoadLock = false;
+let lastHorizontalLoadAt = 0;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -124,7 +128,7 @@ function setupInfiniteScroll() {
   infiniteObserver = new IntersectionObserver(
     (entries) => {
       const [entry] = entries;
-      if (!entry.isIntersecting || state.ui.currentView !== "home") return;
+      if (!entry.isIntersecting || state.ui.currentView !== "home" || state.ui.orderMode !== "master") return;
 
       const changed = increaseVisibleCount(6);
       if (changed) {
@@ -137,6 +141,28 @@ function setupInfiniteScroll() {
       rootMargin: "240px 0px",
     }
   );
+}
+
+function setupHorizontalSectionLoading() {
+  setSectionLoadMoreHandler(({ section }) => {
+    if (state.ui.currentView !== "home" || state.ui.orderMode !== "section") return;
+    if (horizontalLoadLock || state.ui.loading) return;
+
+    const now = Date.now();
+    if (now - lastHorizontalLoadAt < HORIZONTAL_LOAD_COOLDOWN_MS) return;
+
+    const targetSection = section === "watched" ? "watched" : "unwatched";
+    const changed = increaseVisibleCount(6, targetSection);
+    if (!changed) return;
+
+    lastHorizontalLoadAt = now;
+    horizontalLoadLock = true;
+    renderSections({ sectionOnly: targetSection });
+
+    requestAnimationFrame(() => {
+      horizontalLoadLock = false;
+    });
+  });
 }
 
 function closeAddView({ scrollTop = true } = {}) {
@@ -425,6 +451,7 @@ function init() {
   setupFilters();
   setupInteractions(document);
   setupInfiniteScroll();
+  setupHorizontalSectionLoading();
   setupDragAndDrop();
   bindEvents();
   setupRouting({ onRouteChange: handleRouteChange });

@@ -1,4 +1,5 @@
 const VISIBLE_STEP = 6;
+const SECTION_KEYS = ["unwatched", "watched"];
 
 const initialTheme = document.body.classList.contains("dark") ? "dark" : "light";
 
@@ -12,7 +13,13 @@ export const state = {
   ui: {
     currentView: "home",
     orderMode: "section", // section | master
+    // Master view vertical pagination count.
     visibleCount: VISIBLE_STEP,
+    // Section view horizontal pagination counts per rail.
+    visibleBySection: {
+      unwatched: VISIBLE_STEP,
+      watched: VISIBLE_STEP,
+    },
     loading: false,
     loadingText: "",
     statusMessage: "",
@@ -130,13 +137,33 @@ export function isTogglePending(movieId) {
 
 export function resetVisibleCount() {
   state.ui.visibleCount = VISIBLE_STEP;
+  state.ui.visibleBySection.unwatched = VISIBLE_STEP;
+  state.ui.visibleBySection.watched = VISIBLE_STEP;
 }
 
 export function ensureVisibleCountAtLeast(minimum) {
   state.ui.visibleCount = Math.max(state.ui.visibleCount, minimum);
+  SECTION_KEYS.forEach((section) => {
+    state.ui.visibleBySection[section] = Math.max(state.ui.visibleBySection[section], minimum);
+  });
 }
 
-export function increaseVisibleCount(step = VISIBLE_STEP) {
+function getFilteredSectionTotal(section) {
+  const target = section === "watched" ? "watched" : "unwatched";
+  const wantsSeen = target === "watched";
+  return getFilteredMovies().filter((movie) => Boolean(movie.seen) === wantsSeen).length;
+}
+
+export function increaseVisibleCount(step = VISIBLE_STEP, section = null) {
+  if (section === "unwatched" || section === "watched") {
+    const total = getFilteredSectionTotal(section);
+    const current = state.ui.visibleBySection[section];
+    const next = Math.min(total, current + step);
+    const changed = next !== current;
+    state.ui.visibleBySection[section] = next;
+    return changed;
+  }
+
   const total = getFilteredMovies().length;
   const next = Math.min(total, state.ui.visibleCount + step);
   const changed = next !== state.ui.visibleCount;
@@ -183,4 +210,3 @@ export function toggleMovieLocally(movieId) {
 
   return getMovieById(movieId);
 }
-

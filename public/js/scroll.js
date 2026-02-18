@@ -1,5 +1,17 @@
 const SCROLL_STEP = 300;
 let hasResizeListener = false;
+let sectionLoadMoreHandler = null;
+
+function scheduleWithRaf(container, callback) {
+  if (!container) return;
+  if (container.__mmhRafScheduled) return;
+
+  container.__mmhRafScheduled = true;
+  requestAnimationFrame(() => {
+    container.__mmhRafScheduled = false;
+    callback();
+  });
+}
 
 function getWrapperParts(wrapper) {
   const grid = wrapper.querySelector(".horizontal-scroll-grid");
@@ -30,6 +42,27 @@ function getScrollMetrics(scrollContainer) {
     progress,
     isScrollable: maxScrollLeft > 2,
   };
+}
+
+function maybeRequestSectionLoad(wrapper, scrollContainer) {
+  if (typeof sectionLoadMoreHandler !== "function") return;
+  if (!wrapper || !scrollContainer) return;
+
+  const section = wrapper.closest(".movie-section")?.dataset?.section;
+  if (!section || section === "master") return;
+
+  const metrics = getScrollMetrics(scrollContainer);
+  if (!metrics.isScrollable) return;
+
+  const remaining = metrics.maxScrollLeft - metrics.scrollLeft;
+  if (remaining > 220) return;
+
+  sectionLoadMoreHandler({
+    section,
+    scrollLeft: metrics.scrollLeft,
+    maxScrollLeft: metrics.maxScrollLeft,
+    remaining,
+  });
 }
 
 function updateWrapperState(wrapper) {
@@ -77,9 +110,38 @@ function bindWrapper(wrapper) {
   scrollContainer.addEventListener(
     "scroll",
     () => {
-      updateWrapperState(wrapper);
+      scheduleWithRaf(scrollContainer, () => {
+        updateWrapperState(wrapper);
+        maybeRequestSectionLoad(wrapper, scrollContainer);
+      });
     },
     { passive: true }
+  );
+
+  // Netflix-like rail behavior: mouse wheel moves the horizontal section rail.
+  scrollContainer.addEventListener(
+    "wheel",
+    (event) => {
+      const canScrollHorizontally = scrollContainer.scrollWidth > scrollContainer.clientWidth + 2;
+      if (!canScrollHorizontally) return;
+
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+
+      const metrics = getScrollMetrics(scrollContainer);
+      const atStart = metrics.scrollLeft <= 0;
+      const atEnd = metrics.scrollLeft >= metrics.maxScrollLeft - 1;
+      const movingRight = event.deltaY > 0;
+
+      if ((movingRight && atEnd) || (!movingRight && atStart)) return;
+
+      event.preventDefault();
+      scrollContainer.scrollLeft += event.deltaY;
+      scheduleWithRaf(scrollContainer, () => {
+        updateWrapperState(wrapper);
+        maybeRequestSectionLoad(wrapper, scrollContainer);
+      });
+    },
+    { passive: false }
   );
 
   // Initial paint after layout calculations.
@@ -103,4 +165,8 @@ export function setupSectionScrollUX(root = document) {
 export function syncSectionScrollUX(root = document) {
   const wrappers = root.querySelectorAll(".section-wrapper");
   wrappers.forEach((wrapper) => updateWrapperState(wrapper));
+}
+
+export function setSectionLoadMoreHandler(handler) {
+  sectionLoadMoreHandler = typeof handler === "function" ? handler : null;
 }

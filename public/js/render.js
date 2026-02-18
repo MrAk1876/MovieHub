@@ -501,6 +501,32 @@ export function runFlipAnimation(previousPositions, options = {}) {
   });
 }
 
+function getSectionRail(sectionEl) {
+  return sectionEl?.querySelector(".movie-scroll-container") || null;
+}
+
+function captureSectionRailPositions() {
+  return {
+    unwatched: getSectionRail(elements.unwatchedSection)?.scrollLeft ?? 0,
+    watched: getSectionRail(elements.watchedSection)?.scrollLeft ?? 0,
+  };
+}
+
+function restoreSectionRailPositions(positions) {
+  if (!positions) return;
+
+  const apply = (sectionEl, targetScrollLeft) => {
+    const rail = getSectionRail(sectionEl);
+    if (!rail) return;
+
+    const maxScrollLeft = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    rail.scrollLeft = Math.max(0, Math.min(Number(targetScrollLeft) || 0, maxScrollLeft));
+  };
+
+  apply(elements.unwatchedSection, positions.unwatched);
+  apply(elements.watchedSection, positions.watched);
+}
+
 function applyOrderModeVisibility() {
   const masterMode = state.ui.orderMode === "master";
   elements.masterSection?.classList.toggle("hidden", !masterMode);
@@ -512,18 +538,22 @@ export function renderSections(options = {}) {
   if (state.ui.currentView !== "home") return;
   ensureRouteShell();
 
-  const { keepScroll = true, addedId = null, movingInId = null } = options;
+  const { keepScroll = true, addedId = null, movingInId = null, sectionOnly = null } = options;
   const previousScrollY = window.scrollY;
 
   renderYearChips();
   renderOrderModeSwitch();
   applyOrderModeVisibility();
 
-  const filtered = getFilteredMovies();
-  const visible = filtered.slice(0, state.ui.visibleCount);
   const masterMode = state.ui.orderMode === "master";
+  const railPositions = !masterMode && keepScroll ? captureSectionRailPositions() : null;
+  const filtered = getFilteredMovies();
+  let filteredLength = filtered.length;
+  let visibleLength = 0;
 
   if (masterMode) {
+    const visible = filtered.slice(0, state.ui.visibleCount);
+    visibleLength = visible.length;
     renderMovies(elements.masterGrid, visible, {
       addedId,
       movingInId,
@@ -533,17 +563,29 @@ export function renderSections(options = {}) {
       animateCount(elements.masterCount, visible.length);
     }
   } else {
-    const unwatched = visible.filter((movie) => !movie.seen);
-    const watched = visible.filter((movie) => movie.seen);
+    const filteredUnwatched = filtered.filter((movie) => !movie.seen);
+    const filteredWatched = filtered.filter((movie) => movie.seen);
+    const visibleUnwatched = filteredUnwatched.slice(0, state.ui.visibleBySection.unwatched);
+    const visibleWatched = filteredWatched.slice(0, state.ui.visibleBySection.watched);
+    visibleLength = visibleUnwatched.length + visibleWatched.length;
+    filteredLength = filteredUnwatched.length + filteredWatched.length;
 
-    renderMovies(elements.unwatchedGrid, unwatched, { addedId, movingInId });
-    renderMovies(elements.watchedGrid, watched, { addedId, movingInId });
+    const renderUnwatched = sectionOnly !== "watched";
+    const renderWatched = sectionOnly !== "unwatched";
+
+    if (renderUnwatched) {
+      renderMovies(elements.unwatchedGrid, visibleUnwatched, { addedId, movingInId });
+    }
+
+    if (renderWatched) {
+      renderMovies(elements.watchedGrid, visibleWatched, { addedId, movingInId });
+    }
 
     if (elements.unwatchedCount) {
-      animateCount(elements.unwatchedCount, unwatched.length);
+      animateCount(elements.unwatchedCount, visibleUnwatched.length);
     }
     if (elements.watchedCount) {
-      animateCount(elements.watchedCount, watched.length);
+      animateCount(elements.watchedCount, visibleWatched.length);
     }
   }
 
@@ -551,11 +593,13 @@ export function renderSections(options = {}) {
   animateOrderNumberChanges(elements.homeView || elements.viewContainer);
 
   if (elements.scrollSentinel) {
-    elements.scrollSentinel.classList.toggle("hidden", visible.length >= filtered.length);
+    const hideSentinel = masterMode ? visibleLength >= filteredLength : true;
+    elements.scrollSentinel.classList.toggle("hidden", hideSentinel);
   }
 
-  applyStatusMessage(filtered.length, visible.length);
+  applyStatusMessage(filteredLength, visibleLength);
   setupSectionScrollUX(elements.homeView || elements.viewContainer);
+  restoreSectionRailPositions(railPositions);
   applyBusyState();
   if (!isBusy()) {
     syncSectionScrollUX(elements.homeView || elements.viewContainer);

@@ -45,12 +45,6 @@
     justify-content: flex-start;
   }
 
-  .brand-logo {
-    width: 36px;
-    height: 36px;
-    flex-basis: 36px;
-  }
-
   .header-actions {
     justify-content: flex-start;
     flex-wrap: wrap;
