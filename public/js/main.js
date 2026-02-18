@@ -237,9 +237,10 @@ async function saveMovie(event) {
   }
 
   try {
+    const wasEditing = Boolean(editingMovieId);
     let affectedMovieId = null;
 
-    if (editingMovieId) {
+    if (wasEditing) {
       const updatedMovie = await updateMovieApi(editingMovieId, payload);
       upsertMovie(updatedMovie);
       affectedMovieId = editingMovieId;
@@ -255,13 +256,23 @@ async function saveMovie(event) {
 
     editingMovieId = null;
     ensureVisibleCountAtLeast(6);
-    resetAddFormFields();
     pendingHomeRenderOptions = {
       keepScroll: false,
       addedId: affectedMovieId,
     };
 
-    // Push route back to home view after successful save.
+    // Keep Add view open after creating a movie (no forced redirect to home).
+    if (!wasEditing) {
+      resetAddFormFields();
+      if (elements.addOrder) {
+        elements.addOrder.value = String(getNextPriorityNumber());
+      }
+      renderLayout();
+      return;
+    }
+
+    // Editing keeps existing behavior: return to home after successful update.
+    resetAddFormFields();
     navigateTo("home", { scrollTop: true });
   } catch (error) {
     handleRequestError(error, "Unable to save movie.");
